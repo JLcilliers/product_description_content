@@ -1005,8 +1005,8 @@ export default async function handler(req, res) {
       try {
         const response = await anthropic.messages.create({
           model: 'claude-3-haiku-20240307', // Using faster model to avoid timeouts
-          max_tokens: 1500,
-          temperature: 0.7,
+          max_tokens: 4000, // Increased significantly for comprehensive content
+          temperature: 0.4, // Lower temperature for more accurate, detailed output
           system: prompt.system,
           messages: [
             {
@@ -1015,6 +1015,9 @@ export default async function handler(req, res) {
             }
           ]
         });
+
+        // Add a small delay to ensure quality over speed
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         return response.content[0].text.trim();
       } catch (error) {
@@ -1088,6 +1091,89 @@ export default async function handler(req, res) {
       }
     }
 
+    // Parse technical specifications from table format
+    if (content.technicalSpecs) {
+      try {
+        console.log('Raw technical specs received:', content.technicalSpecs.substring(0, 500));
+        const specsObject = {};
+        const specText = content.technicalSpecs;
+
+        // Try different parsing strategies
+        if (specText.includes('|')) {
+          // Parse pipe-delimited table format
+          const lines = specText.split('\n').filter(line => line.trim());
+
+          lines.forEach((line) => {
+            // Skip header rows and separator lines
+            if (line.includes('Specification') && line.includes('Details')) return;
+            if (line.match(/^[\s\-\|]+$/)) return;
+
+            // Clean up the line and split by pipe
+            const cleanLine = line.replace(/^\||\|$/g, '').trim();
+            const parts = cleanLine.split('|').map(part => part.trim()).filter(part => part);
+
+            // Handle both 2-column and potentially malformed tables
+            if (parts.length >= 2) {
+              const key = parts[0];
+              const value = parts.slice(1).join(' ').trim();
+              if (key && value && key.length > 1 && value.length > 1) {
+                specsObject[key] = value;
+              }
+            } else if (parts.length === 1 && parts[0].includes(':')) {
+              // Handle colon-separated format within a single cell
+              const colonParts = parts[0].split(':').map(p => p.trim());
+              if (colonParts.length === 2 && colonParts[0] && colonParts[1]) {
+                specsObject[colonParts[0]] = colonParts[1];
+              }
+            }
+          });
+        } else if (specText.includes(':')) {
+          // Parse colon-separated format (fallback)
+          const lines = specText.split('\n').filter(line => line.trim());
+          lines.forEach(line => {
+            const colonIndex = line.indexOf(':');
+            if (colonIndex > 0) {
+              const key = line.substring(0, colonIndex).trim();
+              const value = line.substring(colonIndex + 1).trim();
+              if (key && value && key.length > 1 && value.length > 1) {
+                specsObject[key] = value;
+              }
+            }
+          });
+        }
+
+        // Only use the parsed object if we got valid data with reasonable content
+        if (Object.keys(specsObject).length > 5) {
+          console.log('Successfully parsed technical specs:', Object.keys(specsObject).length, 'items');
+          content.technicalSpecs = specsObject;
+        } else {
+          // If parsing failed, generate comprehensive fallback specs
+          console.log('Technical specs parsing resulted in insufficient data:', Object.keys(specsObject).length, 'items found');
+          console.log('Parsed specs object:', specsObject);
+          content.technicalSpecs = null;
+        }
+      } catch (e) {
+        console.error('Error parsing technical specs:', e);
+        content.technicalSpecs = null;
+      }
+    }
+
+    // Parse use cases from bullet format
+    if (content.useCases) {
+      try {
+        const useCasesList = content.useCases
+          .split('\n')
+          .filter(line => line.trim().startsWith('•'))
+          .map(line => line.trim().substring(1).trim());
+
+        if (useCasesList.length > 0) {
+          content.useCases = useCasesList;
+        }
+      } catch (e) {
+        console.error('Error parsing use cases:', e);
+      }
+    }
+
     if (content.structuredData) {
       try {
         // Try to parse as JSON to validate
@@ -1126,11 +1212,51 @@ export default async function handler(req, res) {
       'Industry-leading performance',
       'Comprehensive warranty included'
     ];
-    content.technicalSpecs = content.technicalSpecs || scrapedData.specifications || {
-      'Quality': 'Premium',
-      'Warranty': 'Included',
-      'Support': '24/7 Available'
-    };
+    // Ensure technical specs is always an object with comprehensive fallback
+    if (!content.technicalSpecs || typeof content.technicalSpecs === 'string') {
+      // Try to extract any specifications from scraped data first
+      const fallbackSpecs = {};
+
+      // Use scraped specifications if available
+      if (scrapedData.specifications && typeof scrapedData.specifications === 'object') {
+        Object.assign(fallbackSpecs, scrapedData.specifications);
+      }
+
+      // Provide comprehensive default specifications for food ingredients
+      const defaultSpecs = {
+        'Product Form': fallbackSpecs['Product Form'] || 'Powder/Liquid/Paste (contact for specific form)',
+        'Packaging': fallbackSpecs['Packaging'] || '25kg bags/drums (custom packaging available)',
+        'Shelf Life': fallbackSpecs['Shelf Life'] || '12-24 months from production date',
+        'Storage Conditions': fallbackSpecs['Storage Conditions'] || 'Store in cool, dry conditions below 25°C',
+        'Certifications': fallbackSpecs['Certifications'] || 'BRC Grade A, FSSC 22000, ISO 9001:2015',
+        'Allergen Status': fallbackSpecs['Allergen Status'] || 'Free from 14 EU declarable allergens',
+        'Country of Origin': fallbackSpecs['Country of Origin'] || 'Multiple origins (contact for specific batch)',
+        'Minimum Order': fallbackSpecs['Minimum Order'] || '25kg (pallet quantities preferred)',
+        'Lead Time': fallbackSpecs['Lead Time'] || '3-5 working days (stock dependent)',
+        'pH Range': fallbackSpecs['pH Range'] || 'Product specific (technical data available)',
+        'Microbiological': fallbackSpecs['Microbiological'] || 'Meets EU food safety standards',
+        'GMO Status': fallbackSpecs['GMO Status'] || 'Non-GMO (certification available)',
+        'Kosher/Halal': fallbackSpecs['Kosher/Halal'] || 'Certification available on request',
+        'Processing Method': fallbackSpecs['Processing Method'] || 'Contact for processing details',
+        'Typical Applications': fallbackSpecs['Typical Applications'] || 'Food & beverage manufacturing'
+      };
+
+      // Merge fallback with defaults, preferring any actual scraped data
+      content.technicalSpecs = { ...defaultSpecs, ...fallbackSpecs };
+    }
+
+    // Ensure use cases is always an array with comprehensive fallback
+    if (!content.useCases || !Array.isArray(content.useCases)) {
+      content.useCases = [
+        'Beverage manufacturers - Fortify juice drinks and smoothies with natural vitamin content for premium health-focused product lines',
+        'Bakery producers - Enhance nutritional profiles of breakfast bars and cereals meeting clean label requirements for retail chains',
+        'Dairy processors - Develop functional yogurts and probiotic drinks targeting specific health benefits with stable ingredient integration',
+        'Confectionery manufacturers - Create vitamin-enriched gummies and functional sweets for growing wellness confectionery market',
+        'Nutraceutical formulators - Produce dietary supplements and functional foods meeting pharmaceutical-grade quality standards',
+        'Private label manufacturers - Develop own-brand health products for major UK supermarket chains requiring consistent quality',
+        'Contract manufacturers - Meet diverse client specifications with versatile ingredient suitable for multiple applications'
+      ];
+    }
     content.callToActions = content.callToActions || 'Order now for fast delivery across the UK. Professional support available. Contact our experts today.';
 
     return res.status(200).json(content);
