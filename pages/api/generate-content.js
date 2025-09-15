@@ -329,6 +329,17 @@ Return ONLY the CTA text. No buttons, no HTML, no formatting codes. Plain text s
   }
 };
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '1mb',
+    },
+    responseLimit: '4mb',
+    // Increase timeout for Vercel functions (max 10 seconds for hobby, 60 for pro)
+    maxDuration: 60,
+  },
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -372,8 +383,8 @@ export default async function handler(req, res) {
 
       try {
         const response = await anthropic.messages.create({
-          model: 'claude-3-5-sonnet-20241022',
-          max_tokens: 2000,
+          model: 'claude-3-haiku-20240307', // Using faster model to avoid timeouts
+          max_tokens: 1500,
           temperature: 0.7,
           system: prompt.system,
           messages: [
@@ -391,17 +402,30 @@ export default async function handler(req, res) {
       }
     }
 
-    // Generate content in sequence (some depend on previous results)
+    // Generate critical content first (title, meta, intro)
     content.productTitle = await generateWithPrompt('productTitle');
     content.metaDescription = await generateWithPrompt('metaDescription');
     content.introduction = await generateWithPrompt('introduction');
-    content.featuresAndBenefits = await generateWithPrompt('featuresAndBenefits');
-    content.technicalSpecs = await generateWithPrompt('technicalSpecs');
-    content.useCases = await generateWithPrompt('useCases');
-    content.seoKeywords = await generateWithPrompt('seoKeywords');
-    content.structuredData = await generateWithPrompt('structuredData');
-    content.faqs = await generateWithPrompt('faqs');
-    content.callToActions = await generateWithPrompt('callToActions');
+
+    // Generate remaining content in parallel to speed up processing
+    const parallelGenerations = await Promise.all([
+      generateWithPrompt('featuresAndBenefits'),
+      generateWithPrompt('technicalSpecs'),
+      generateWithPrompt('useCases'),
+      generateWithPrompt('seoKeywords'),
+      generateWithPrompt('structuredData'),
+      generateWithPrompt('faqs'),
+      generateWithPrompt('callToActions')
+    ]);
+
+    // Assign parallel results
+    content.featuresAndBenefits = parallelGenerations[0];
+    content.technicalSpecs = parallelGenerations[1];
+    content.useCases = parallelGenerations[2];
+    content.seoKeywords = parallelGenerations[3];
+    content.structuredData = parallelGenerations[4];
+    content.faqs = parallelGenerations[5];
+    content.callToActions = parallelGenerations[6];
 
     // Process and format some content types
     if (content.featuresAndBenefits) {
@@ -574,13 +598,4 @@ function generateFallbackContent(scrapedData, aiText = '') {
       'Get Yours Today - Satisfaction Guaranteed'
     ]
   };
-}
-
-export const config = {
-  api: {
-    bodyParser: {
-      sizeLimit: '1mb',
-    },
-    responseLimit: '4mb',
-  },
 }
