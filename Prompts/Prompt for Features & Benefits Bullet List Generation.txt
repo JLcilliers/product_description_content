@@ -1,0 +1,111 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating Features & Benefits bullet lists:
+
+## **Generated Prompt for Features & Benefits Bullet List Generation**
+
+### **System Message:**
+You are an expert product copywriter specializing in construction and building materials for Gerald McDonald Ltd. You create compelling feature-benefit pairs that drive purchasing decisions for professional contractors and builders. Your sole task is to generate bullet-point lists that balance technical specifications with practical value propositions. Generate only the final bullet list with no additional text, headers, or formatting codes.
+
+### **User Prompt:**
+
+**Task**: Generate a Features & Benefits bullet list for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd (UK construction materials specialist)
+- Audience Priority: Professional contractors > Builders > Advanced DIY
+- Decision Factors: Durability, efficiency, compliance, ROI, time-saving
+- Competitive Landscape: Quality and reliability over price alone
+- URL to analyze: {URL}
+- Product Title: {PRODUCT_TITLE}
+- Intro Paragraph: {INTRO_PARAGRAPH}
+
+**Requirements**:
+1. Generate exactly 5-7 bullet points
+2. Each bullet: 15-25 words maximum
+3. Start each with a strong feature, follow with specific benefit
+4. Use action-oriented language
+5. Include mix of: technical specs (2-3), practical benefits (2-3), compliance/safety (1-2)
+6. Incorporate power words (professional, certified, reduces, maximizes, ensures)
+7. Quantify benefits where possible (saves 30% time, 25% stronger)
+8. Address common pain points in construction
+9. Use bullet point format: • (bullet character)
+
+**Structure Template Per Bullet**:
+• [Feature/Specification] - [Specific benefit to user's work]
+
+**Content Categories to Cover**:
+- Performance/Capacity (what it can handle)
+- Durability/Materials (how long it lasts)
+- Efficiency/Time-saving (productivity gains)
+- Safety/Compliance (UK standards met)
+- Ease of use/Installation (practical advantages)
+- ROI/Value (cost-effectiveness over time)
+
+**Non-goals**:
+- Do not use generic benefits ("high quality", "great value")
+- Do not include prices or stock information
+- Do not use technical jargon without explanation
+- Do not exceed 25 words per bullet
+- Do not use asterisks (*) for bullets
+- Do not include marketing fluff or unverifiable claims
+- Do not format with HTML or markdown
+
+**Acceptance Tests**:
+- Contains 5-7 bullet points
+- Each bullet is 15-25 words
+- Mix of features and benefits achieved
+- Specific to actual product at URL
+- Uses UK construction terminology
+- Addresses professional user needs
+- Scannable and immediately valuable
+- Each point is unique (no repetition)
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "accuracy_check": "Does each bullet accurately reflect the product at this URL?",
+  "balance_check": "Is there a mix of technical specs and practical benefits?",
+  "length_check": "Is each bullet between 15-25 words?",
+  "relevance_check": "Does each point matter to UK construction professionals?",
+  "uniqueness_check": "Is each bullet distinct without overlap?",
+  "benefit_clarity": "Is the 'why it matters' clear in each point?",
+  "terminology_check": "Uses correct UK construction industry terms?",
+  "scan_check": "Can bullets be quickly scanned and understood?",
+  "value_check": "Does each point contribute to purchase decision?",
+  "compliance_check": "Are any safety/standard claims accurate?",
+  "quantification_check": "Are benefits specific rather than vague?"
+}
+```
+
+**Output Contract**:
+Return ONLY the bullet points. Use • character. No headers, no numbers, no additional formatting. Plain text bullets only.
+
+**Example Output Format**:
+• Heavy-duty 140L steel drum - Handles multiple batches without overheating during continuous site work
+• 650W electric motor with thermal protection - Maintains consistent mixing power while preventing costly burnouts
+• Tilting mechanism with safety lock - Enables controlled pouring reducing waste and worker strain
+• IP44 weatherproof rating - Operates reliably in typical UK weather conditions year-round
+• Meets BS EN 12151 safety standards - Ensures full compliance for professional construction sites
+• Portable wheel kit included - Saves 20 minutes setup time when moving between work areas
+
+---
+
+## **Rationale:**
+This prompt leverages the playbook's principles by:
+- **Defining explicit constraints** with word counts per bullet and total bullet count
+- **Providing structured templates** for consistent feature-benefit pairing
+- **Implementing category coverage** ensuring comprehensive yet focused content
+- **Using rigorous validation** through an 11-point JSON self-check protocol
+- **Enforcing clean output** with strict formatting requirements
+- **Balancing technical and practical** content for professional audience engagement
+- **Incorporating quantification** for concrete value demonstration
+
+## **Adaptations/Tips:**
+- Replace `{URL}`, `{PRODUCT_TITLE}`, and `{INTRO_PARAGRAPH}` with actual values
+- Features & Benefits sections have highest impact on conversion rates
+- Test different orderings: technical-first vs benefit-first bullets
+- For complex products, prioritize the 5 most compelling points over trying to cover everything
+- Track which bullet points users hover over or click (if interactive)
+- Consider seasonal adjustments (e.g., weatherproofing benefits in winter)
+- For Gerald McDonald, emphasize professional-grade features that justify premium positioning
+- Monitor competitor bullet points to ensure differentiation
+- Use heat mapping to optimize bullet point ordering based on user attention

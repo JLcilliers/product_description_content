@@ -1,0 +1,272 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating Structured Data / Rich Snippets:
+
+## **Generated Prompt for Structured Data / Rich Snippets Generation**
+
+### **System Message:**
+You are a technical SEO specialist expert in schema.org markup and Google's structured data requirements for e-commerce. You create precise JSON-LD structured data for Gerald McDonald Ltd product pages that maximize rich snippet eligibility and enhance SERP visibility. Your sole task is to generate valid, comprehensive structured data that passes Google's Rich Results Test. Generate only the final JSON-LD code with no additional text or explanations.
+
+### **User Prompt:**
+
+**Task**: Generate complete JSON-LD structured data for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd
+- Business Type: Construction materials supplier (LocalBusiness + Store)
+- Schema Types: Product, Offer, AggregateRating, Organization
+- Rich Results Target: Product snippets, price, availability, reviews
+- Compliance: Google Merchant Center, Schema.org v15.0
+- URL to analyze: {URL}
+- Product Title: {PRODUCT_TITLE}
+- Meta Description: {META_DESCRIPTION}
+- Specifications: {SPECIFICATIONS_TABLE}
+
+**Requirements**:
+1. Use JSON-LD format with @context schema.org
+2. Include Product schema with all required properties
+3. Embed Offer schema with UK pricing (GBP)
+4. Include Organization data for Gerald McDonald
+5. Add BreadcrumbList for site navigation
+6. Include AggregateRating if reviews exist
+7. Add relevant product identifiers (MPN, GTIN if available)
+8. Include image URLs (use placeholder structure)
+9. Validate against Google's required/recommended properties
+
+**Schema Structure Template**:
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      // Product properties
+    },
+    {
+      "@type": "BreadcrumbList",
+      // Breadcrumb properties
+    },
+    {
+      "@type": "Organization",
+      // Gerald McDonald properties
+    }
+  ]
+}
+```
+
+**Required Product Properties**:
+- name (product title)
+- description (from meta description)
+- image (array of image URLs)
+- brand (manufacturer)
+- sku (product code)
+- mpn (manufacturer part number)
+- offers (pricing/availability)
+- aggregateRating (if applicable)
+- review (if available)
+- category (construction materials subcategory)
+- material (if applicable)
+- weight (from specifications)
+- depth/width/height (dimensions)
+
+**Offer Properties**:
+- @type: "Offer"
+- price (numeric value)
+- priceCurrency: "GBP"
+- availability (schema.org/InStock or similar)
+- url (product page URL)
+- priceValidUntil (future date)
+- seller (Gerald McDonald organization)
+- shippingDetails (UK delivery)
+- hasMerchantReturnPolicy
+- deliveryTime
+
+**Organization Properties**:
+- name: "Gerald McDonald Ltd"
+- url: "https://www.geraldmcdonald.com"
+- logo (company logo URL)
+- contactPoint (customer service)
+- address (UK business address)
+- vatID (UK VAT number format)
+
+**Non-goals**:
+- Do not include properties without values
+- Do not guess prices or availability
+- Do not include fake reviews or ratings
+- Do not use deprecated schema properties
+- Do not include competitor information
+- Do not exceed 10KB total size
+- Do not include HTML or comments in JSON
+
+**Acceptance Tests**:
+- Valid JSON syntax
+- Passes JSON-LD validator
+- Includes all required Google properties
+- UK-specific data (GBP, UK addresses)
+- Product type appropriate for construction
+- No null or empty required fields
+- Proper schema.org type hierarchy
+- Image URLs in correct format
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "json_validity": "Is the JSON syntax completely valid?",
+  "required_fields": "Are all Google-required Product fields present?",
+  "schema_types": "Are @type declarations correct for construction products?",
+  "price_format": "Is price in GBP with numeric value?",
+  "url_structure": "Are all URLs properly formatted with https?",
+  "organization_check": "Is Gerald McDonald correctly identified as seller?",
+  "breadcrumb_check": "Does breadcrumb reflect site hierarchy?",
+  "identifier_check": "Are SKU/MPN included where available?",
+  "image_array": "Are images provided as array with multiple URLs?",
+  "availability_check": "Is availability using valid schema.org values?",
+  "no_empty_values": "Are all included properties populated?"
+}
+```
+
+**Output Contract**:
+Return ONLY the JSON-LD code. No script tags, no HTML wrapper, no explanations. Pure JSON starting with { and ending with }. Use placeholder URLs where actual URLs unknown.
+
+**Example Output Format**:
+```json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Product",
+      "name": "Belle Minimix 140L Cement Mixer",
+      "description": "Shop professional cement mixers at Gerald McDonald. Heavy-duty 140L capacity for construction sites. Trusted UK supplier. Fast delivery available.",
+      "image": [
+        "https://www.geraldmcdonald.com/images/products/[product-id]-main.jpg",
+        "https://www.geraldmcdonald.com/images/products/[product-id]-alt1.jpg",
+        "https://www.geraldmcdonald.com/images/products/[product-id]-alt2.jpg"
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "Belle"
+      },
+      "sku": "MINI140-UK",
+      "mpn": "MINI140",
+      "category": "Construction Equipment > Concrete Mixers",
+      "material": "Steel",
+      "weight": {
+        "@type": "QuantitativeValue",
+        "value": 85,
+        "unitCode": "KGM"
+      },
+      "depth": {
+        "@type": "QuantitativeValue",
+        "value": 840,
+        "unitCode": "MMT"
+      },
+      "width": {
+        "@type": "QuantitativeValue",
+        "value": 1240,
+        "unitCode": "MMT"
+      },
+      "height": {
+        "@type": "QuantitativeValue",
+        "value": 1420,
+        "unitCode": "MMT"
+      },
+      "offers": {
+        "@type": "Offer",
+        "url": "https://www.geraldmcdonald.com/products/[product-url]",
+        "price": "[PRICE]",
+        "priceCurrency": "GBP",
+        "availability": "https://schema.org/InStock",
+        "priceValidUntil": "2025-12-31",
+        "deliveryLeadTime": {
+          "@type": "QuantitativeValue",
+          "value": "1-3",
+          "unitCode": "DAY"
+        },
+        "seller": {
+          "@type": "Organization",
+          "name": "Gerald McDonald Ltd",
+          "url": "https://www.geraldmcdonald.com"
+        },
+        "hasMerchantReturnPolicy": {
+          "@type": "MerchantReturnPolicy",
+          "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+          "merchantReturnDays": 30,
+          "returnMethod": "https://schema.org/ReturnByMail",
+          "returnFees": "https://schema.org/FreeReturn"
+        },
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingDestination": {
+            "@type": "DefinedRegion",
+            "addressCountry": "GB"
+          },
+          "shippingRate": {
+            "@type": "MonetaryAmount",
+            "currency": "GBP",
+            "value": "[SHIPPING_RATE]"
+          },
+          "deliveryTime": {
+            "@type": "ShippingDeliveryTime",
+            "businessDays": {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+            },
+            "transitTime": {
+              "@type": "QuantitativeValue",
+              "minValue": 1,
+              "maxValue": 3,
+              "unitCode": "DAY"
+            }
+          }
+        }
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.geraldmcdonald.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Products",
+          "item": "https://www.geraldmcdonald.com/products"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Cement Mixers",
+          "item": "https://www.geraldmcdonald.com/products/cement-mixers"
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## **Rationale:**
+This prompt implements the playbook's advanced strategies by:
+- **Using strict JSON output contracts** ensuring valid, parseable structured data
+- **Defining comprehensive schema requirements** covering all Google-required properties
+- **Implementing nested validation** through JSON-LD specific checks
+- **Providing complete templates** for consistent schema implementation
+- **Including UK-specific elements** like GBP currency and UK shipping
+- **Enforcing Google compliance** with current Rich Results requirements
+- **Using placeholder structures** for unknown values while maintaining validity
+
+## **Adaptations/Tips:**
+- Replace all placeholder values ([PRICE], [product-id], etc.) with actual data
+- Validate output using Google's Rich Results Test tool
+- Monitor Search Console for structured data errors
+- Add AggregateRating only when genuine reviews exist (minimum 3-5)
+- Update priceValidUntil quarterly to maintain freshness
+- For products with variants, use ProductGroup schema
+- Include GTIN-13 (EAN) codes when available for better merchant integration
+- Add video objects for products with demonstration videos
+- For Gerald McDonald, emphasize LocalBusiness connection for local SEO
+- Test rich snippet appearance in Google's preview tool
+- Track CTR improvements after structured data implementation

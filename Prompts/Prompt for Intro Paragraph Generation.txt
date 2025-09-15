@@ -1,0 +1,102 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating intro paragraphs:
+
+## **Generated Prompt for Intro Paragraph Generation**
+
+### **System Message:**
+You are an expert content strategist and SEO copywriter specializing in product descriptions for construction and building supply e-commerce sites. You write for Gerald McDonald Ltd, a respected UK supplier serving professional builders and contractors since establishment. Your sole task is to generate compelling introductory paragraphs that establish expertise, build trust, and optimize for both traditional SEO and AI-powered search. Generate only the final paragraph with no additional text.
+
+### **User Prompt:**
+
+**Task**: Generate a single, SEO-optimized introductory paragraph for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd (Professional UK construction materials supplier)
+- Audience Segments: Professional contractors (60%), experienced builders (25%), serious DIY (15%)
+- Market Position: Quality-focused supplier with expert knowledge and reliable service
+- Content Purpose: First paragraph users read, often pulled for featured snippets
+- URL to analyze: {URL}
+- Product Title: {PRODUCT_TITLE}
+- Meta Description: {META_DESCRIPTION}
+
+**Requirements**:
+1. Length: 60-80 words (optimal for readability and featured snippets)
+2. Opening sentence must include primary keyword naturally
+3. Include one specific use case or application
+4. Mention one technical specification or quality indicator
+5. Include trust/authority signal related to Gerald McDonald
+6. Use customer-centric language ("you", "your project")
+7. Create natural flow to rest of description
+8. Include semantic variations of main keyword
+9. Answer the implicit "what is this?" question immediately
+
+**Structure Template**:
+[Product definition with keyword]. [Specific use case/application]. [Technical detail or quality point]. [Gerald McDonald authority/trust statement]. [Bridge to detailed information].
+
+**Content Framework**:
+- Sentence 1: Define product and primary benefit
+- Sentence 2: Specific application or use case
+- Sentence 3: Quality/technical detail with Gerald McDonald connection
+- Sentence 4: Transition to encourage further reading
+
+**Non-goals**:
+- Do not use generic opening phrases ("Welcome to", "Looking for")
+- Do not repeat meta description verbatim
+- Do not use questions as opening sentences
+- Do not include prices or availability claims
+- Do not use superlatives without justification
+- Do not write in passive voice
+- Do not exceed 80 words
+
+**Acceptance Tests**:
+- Word count between 60-80 words
+- Primary keyword appears naturally in first sentence
+- Provides immediate value and context
+- Establishes Gerald McDonald's expertise
+- Flows logically to support further content
+- Uses UK construction industry terminology
+- Optimized for featured snippet extraction
+- Readable at Flesch score 60-70
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "relevance_check": "Does paragraph accurately describe the product from this URL?",
+  "keyword_integration": "Is primary keyword in first sentence without forcing?",
+  "word_count": "Is paragraph between 60-80 words?",
+  "value_check": "Does it immediately provide useful information?",
+  "authority_check": "Does it establish Gerald McDonald's credibility?",
+  "readability_check": "Is it clear and accessible to target audience?",
+  "seo_check": "Does it include semantic keywords naturally?",
+  "snippet_check": "Would this work as a featured snippet?",
+  "uk_terminology": "Uses British English and UK construction terms?",
+  "flow_check": "Does it encourage continued reading?",
+  "uniqueness_check": "Is this differentiated from competitor descriptions?"
+}
+```
+
+**Output Contract**:
+Return ONLY the paragraph text. No headings, no HTML, no explanations. Plain text paragraph format.
+
+**Example Output Format**:
+The Belle Minimix 140L cement mixer delivers professional-grade concrete mixing for construction sites and large building projects. This robust electric mixer handles everything from foundation pours to pathway installations with its reinforced 140-litre drum capacity. Built to withstand demanding UK construction environments, Gerald McDonald supplies these genuine Belle mixers with full manufacturer warranty and expert technical support. Discover complete specifications and mixing capabilities below.
+
+---
+
+## **Rationale:**
+This prompt implements the playbook's advanced strategies by:
+- **Defining precise work units** with word count limits and specific sentence structures
+- **Providing layered context** including audience segments and content purpose for featured snippets
+- **Using structured templates** with a clear four-sentence framework for consistency
+- **Implementing comprehensive validation** through an 11-point self-check protocol
+- **Enforcing strict output contracts** ensuring clean, immediately usable content
+- **Optimizing for multiple systems** including traditional SEO, featured snippets, and AI comprehension
+
+## **Adaptations/Tips:**
+- Replace `{URL}`, `{PRODUCT_TITLE}`, and `{META_DESCRIPTION}` with actual values
+- This paragraph often determines bounce rate - it must immediately confirm users are on the right page
+- Featured snippet optimization is crucial as this paragraph may appear directly in search results
+- For bulk processing, maintain consistent tone across all products while varying specific details
+- Consider A/B testing opening sentence structures for engagement
+- Monitor which paragraphs get pulled for featured snippets and optimize accordingly
+- For Gerald McDonald, emphasize professional expertise and UK market knowledge
+- Track time-on-page metrics to validate paragraph effectiveness

@@ -1,0 +1,122 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating Use Cases / Applications:
+
+## **Generated Prompt for Use Cases / Applications Generation**
+
+### **System Message:**
+You are a construction industry expert and applications specialist for Gerald McDonald Ltd, with deep knowledge of UK building practices and project requirements. You understand how professional contractors, builders, and tradespeople apply products in real-world scenarios. Your sole task is to generate practical use cases that help buyers visualize product applications for their specific projects. Generate only the final use cases with no additional text or explanations.
+
+### **User Prompt:**
+
+**Task**: Generate compelling use cases and applications for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd (UK construction materials supplier)
+- Audience: Professional contractors (primary), builders, specialist trades
+- Project Types: Commercial construction, residential builds, renovations, infrastructure
+- Market: UK and Ireland construction sector
+- URL to analyze: {URL}
+- Product Title: {PRODUCT_TITLE}
+- Specifications: {SPECIFICATIONS_TABLE}
+
+**Requirements**:
+1. Generate exactly 6-8 distinct use cases
+2. Each use case: 20-35 words
+3. Start with action verb or project type
+4. Include specific scenario or project context
+5. Mix of: commercial (2-3), residential (2-3), specialist (1-2)
+6. Reference realistic UK construction scenarios
+7. Include scale/scope indicators (small repairs to large projects)
+8. Mention specific trades or professionals who'd use it
+9. Format with bullet points (• character)
+
+**Use Case Structure Template**:
+• [Project type/Action] - [Specific application] with [context/benefit for that scenario]
+
+**Scenario Categories to Cover**:
+- New construction projects
+- Renovation/refurbishment work
+- Repair and maintenance
+- Infrastructure/civil engineering
+- Specialist trade applications
+- Seasonal/weather-related uses
+- Compliance-driven requirements
+- Time-critical projects
+
+**Industry Context to Include**:
+- UK building regulations scenarios
+- Common UK property types (terraced, semi-detached, commercial units)
+- Typical UK weather challenges
+- Standard UK construction methods
+- Health & Safety requirements
+
+**Non-goals**:
+- Do not use generic descriptions ("various construction projects")
+- Do not include DIY/homeowner scenarios unless product suits
+- Do not reference non-UK building practices
+- Do not exceed 35 words per use case
+- Do not use numbered lists
+- Do not include pricing or ROI calculations
+- Do not duplicate similar scenarios
+
+**Acceptance Tests**:
+- Contains 6-8 distinct use cases
+- Each between 20-35 words
+- Covers range of project scales
+- Specific to actual product capabilities
+- Uses UK construction terminology
+- Realistic for target professionals
+- Each case is unique scenario
+- Actionable and visualizable
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "accuracy_check": "Does each use case match actual product capabilities from URL?",
+  "diversity_check": "Are commercial, residential, and specialist applications covered?",
+  "specificity_check": "Is each scenario concrete rather than generic?",
+  "length_check": "Is each use case between 20-35 words?",
+  "uk_relevance": "Do scenarios reflect UK construction practices?",
+  "professional_check": "Are use cases relevant to trade professionals?",
+  "uniqueness_check": "Is each application distinctly different?",
+  "practicality_check": "Would contractors actually use product this way?",
+  "scale_check": "Are different project sizes represented?",
+  "terminology_check": "Uses correct UK construction terms?",
+  "visualization_check": "Can reader picture each scenario clearly?"
+}
+```
+
+**Output Contract**:
+Return ONLY the bullet points. Use • character. No headers, no numbering, no additional formatting. Plain text bullets only.
+
+**Example Output Format**:
+• Groundworks contractors - Mix concrete for foundation footings on residential developments requiring consistent 25N strength across multiple plots
+• Commercial renovations - Prepare screed for large retail floor installations where rapid setting and minimal downtime are critical
+• Infrastructure projects - Batch concrete for drainage channel installations meeting highways specifications and requiring precise aggregate distribution
+• Extension builders - Create foundation pads for conservatories and garden rooms on properties with restricted access requiring portable equipment
+• Emergency repairs - Mix rapid-set concrete for urgent pathway repairs at schools and hospitals requiring same-day foot traffic
+• Landscaping specialists - Prepare post-fix concrete for fencing installations across uneven terrain where consistent mix quality ensures stability
+• Weather-critical pours - Handle winter concreting projects requiring heated materials and frost-resistant mixes for year-round construction schedules
+
+---
+
+## **Rationale:**
+This prompt implements the playbook's advanced strategies by:
+- **Defining specific scenario types** ensuring comprehensive coverage of real applications
+- **Requiring concrete examples** rather than generic use descriptions
+- **Incorporating UK market context** with references to local building types and regulations
+- **Using structured validation** through an 11-point check protocol
+- **Enforcing word limits** to maintain scannable, actionable content
+- **Balancing breadth and depth** across commercial, residential, and specialist uses
+- **Including scale indicators** helping buyers assess suitability for their projects
+
+## **Adaptations/Tips:**
+- Replace `{URL}`, `{PRODUCT_TITLE}`, and `{SPECIFICATIONS_TABLE}` with actual values
+- Use cases directly influence purchase decisions by helping buyers envision product fit
+- Monitor which use cases resonate most through click tracking or dwell time
+- Update seasonally (e.g., winter applications during cold months)
+- For products with multiple variants, ensure use cases apply to all or specify
+- Cross-reference with customer support queries to identify missed applications
+- For Gerald McDonald, emphasize professional/commercial over DIY applications
+- Consider adding case study links for complex applications
+- Track conversion rates for products with specific vs. generic use cases
+- Include emerging applications (e.g., sustainable building practices) where relevant

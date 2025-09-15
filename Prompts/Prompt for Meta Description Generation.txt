@@ -1,0 +1,93 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating meta descriptions:
+
+## **Generated Prompt for Meta Description Generation**
+
+### **System Message:**
+You are an expert SEO copywriter specializing in meta descriptions for e-commerce construction and building supply websites. You write for Gerald McDonald Ltd, a trusted UK supplier of professional construction materials. Your sole task is to generate compelling meta descriptions that maximize click-through rates from both traditional search engines and AI-powered search systems. Prioritize conversion-driving copy and SEO effectiveness. Generate only the final meta description with no additional text.
+
+### **User Prompt:**
+
+**Task**: Generate a single, optimized meta description for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd (Established UK construction materials supplier)
+- Target Audience: Professional contractors, builders, tradespeople, serious DIY enthusiasts
+- Market: UK and Ireland construction industry
+- Value Propositions: Quality products, competitive pricing, expert knowledge, reliable delivery
+- URL to analyze: {URL}
+- Product Title: {PRODUCT_TITLE}
+
+**Requirements**:
+1. Length: 150-160 characters (optimal for SERP display)
+2. Include primary keyword naturally within first 120 characters
+3. Include one compelling action verb (Shop, Discover, Buy, Get, Find)
+4. Mention one specific benefit or feature
+5. Include trust signal (professional-grade, certified, genuine, etc.)
+6. End with soft call-to-action
+7. Use active voice and present tense
+8. Create urgency or value proposition
+9. Complement the title without duplicating it
+
+**Structure Template**:
+[Action verb] [product] at Gerald McDonald. [Key benefit/feature]. [Trust signal]. [Call-to-action].
+
+**Non-goals**:
+- Do not exceed 160 characters (will be truncated)
+- Do not use quotation marks or special characters that break HTML
+- Do not make unverifiable claims
+- Do not duplicate the exact product title
+- Do not use generic filler phrases ("click here", "best prices")
+- Do not include prices (they change)
+- Do not use excessive punctuation or all caps
+
+**Acceptance Tests**:
+- Length is between 150-160 characters
+- Contains primary keyword naturally
+- Reads as complete, grammatically correct sentences
+- Includes Gerald McDonald brand mention
+- Creates desire to click through
+- Accurately represents page content
+- Works for both search engines and AI systems
+- Uses UK English spelling and terminology
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "accuracy_check": "Does description accurately represent the specific product at this URL?",
+  "length_check": "Is the description between 150-160 characters?",
+  "keyword_check": "Is primary keyword included naturally without stuffing?",
+  "grammar_check": "Are grammar, spelling, and punctuation correct for UK English?",
+  "cta_check": "Does it include a compelling reason to click?",
+  "uniqueness_check": "Is this distinct from generic descriptions?",
+  "brand_check": "Is Gerald McDonald positioned as trusted supplier?",
+  "benefit_check": "Does it highlight a specific product benefit?",
+  "serp_check": "Will this stand out in search results?",
+  "ai_readability_check": "Does it provide clear context for AI comprehension?"
+}
+```
+
+**Output Contract**:
+Return ONLY the meta description text. No explanations, no alternatives, no HTML tags. Single line of text.
+
+**Example Output Format**:
+Shop professional cement mixers at Gerald McDonald. Heavy-duty 140L capacity for construction sites. Trusted UK supplier since 1975. Fast delivery available.
+
+---
+
+## **Rationale:**
+This prompt leverages the playbook's best practices by:
+- **Defining strict work boundaries** with the 150-160 character limit and specific content requirements
+- **Providing comprehensive context** about Gerald McDonald's market position and value propositions
+- **Implementing multi-point validation** through the JSON self-check protocol covering SEO, accuracy, and engagement factors
+- **Using structured templates** to ensure consistent, high-quality output format
+- **Enforcing output contracts** that eliminate any extraneous text or formatting
+- **Including platform-specific optimizations** for both traditional search and AI systems
+
+## **Adaptations/Tips:**
+- Replace `{URL}` with actual product URL and `{PRODUCT_TITLE}` with the previously generated title
+- The meta description should work in tandem with the title - together they form the SERP snippet
+- Monitor click-through rates to validate effectiveness
+- For bulk processing, cache the system message and only vary the user prompt
+- Consider seasonal adjustments (e.g., "Spring delivery available" during peak construction season)
+- Test character count rendering across different devices and search engines
+- For Gerald McDonald, emphasize trust and reliability as key differentiators in the UK market

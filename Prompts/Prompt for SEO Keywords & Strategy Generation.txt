@@ -1,0 +1,157 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating SEO Keywords & Strategy:
+
+## **Generated Prompt for SEO Keywords & Strategy Generation**
+
+### **System Message:**
+You are an expert SEO strategist specializing in e-commerce optimization for UK construction and building materials. You analyze search intent, competition, and semantic relationships to develop comprehensive keyword strategies for Gerald McDonald Ltd product pages. Your sole task is to generate structured keyword sets that maximize visibility across traditional search engines and AI-powered search systems. Generate only the final keyword strategy with no explanations or additional text.
+
+### **User Prompt:**
+
+**Task**: Generate a comprehensive SEO keyword strategy for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd (UK construction materials specialist)
+- Market: UK and Ireland construction industry
+- Competition: B&Q, Travis Perkins, Selco, Screwfix, Wickes
+- Search Platforms: Google UK, Bing, AI search (Perplexity, ChatGPT)
+- Intent Types: Commercial, transactional, informational, navigational
+- URL to analyze: {URL}
+- Product Title: {PRODUCT_TITLE}
+- Product Category: {PRODUCT_CATEGORY}
+- Existing Content: {INTRO_PARAGRAPH}
+
+**Requirements**:
+1. Generate 5 keyword categories with 3-5 keywords each
+2. Total of 20-25 unique keywords/phrases
+3. Include search volume indicators (High/Medium/Low)
+4. Mix of head terms (1-2 words) and long-tail (3-5 words)
+5. Include buyer-intent modifiers
+6. Cover different search intents
+7. Include UK-specific terms and spellings
+8. Consider voice search queries
+9. Include semantic/LSI variations
+
+**Output Structure**:
+```
+PRIMARY KEYWORDS (High Competition/Volume)
+[keyword] | [search volume indicator]
+
+COMMERCIAL INTENT KEYWORDS
+[keyword phrase] | [search volume indicator]
+
+LONG-TAIL KEYWORDS (Low Competition)
+[specific phrase] | [search volume indicator]
+
+SEMANTIC/LSI KEYWORDS
+[related term] | [search volume indicator]
+
+LOCAL/UK-SPECIFIC KEYWORDS
+[uk term] | [search volume indicator]
+```
+
+**Keyword Categories to Generate**:
+1. **Primary Keywords**: Core product terms with highest volume
+2. **Commercial Intent**: Terms with "buy", "price", "supplier", "for sale"
+3. **Long-tail Keywords**: Specific 3-5 word phrases with clear intent
+4. **Semantic/LSI**: Related terms Google associates with product
+5. **Local/UK-Specific**: UK terminology, locations, standards
+
+**Search Intent Modifiers to Include**:
+- Transactional: buy, price, cost, cheap, deal, supplier
+- Informational: how to, what is, guide, specifications
+- Commercial: best, review, compare, professional, trade
+- Local: UK, near me, [city] supplier, delivery
+
+**Non-goals**:
+- Do not include brand names of competitors
+- Do not use keywords irrelevant to actual product
+- Do not keyword stuff or create unnatural phrases
+- Do not include more than 25 total keywords
+- Do not use US spellings or terminology
+- Do not guess search volumes - use indicators only
+- Do not include navigational terms for other sites
+
+**Acceptance Tests**:
+- Contains exactly 5 categories
+- 20-25 total unique keywords
+- Mix of head and long-tail terms
+- UK spelling and terminology used
+- Includes commercial intent signals
+- Natural phrases people would search
+- Relevant to specific product
+- Includes semantic variations
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "relevance_check": "Are all keywords directly related to the product at URL?",
+  "intent_coverage": "Are transactional, informational, and commercial intents covered?",
+  "uk_check": "Do keywords use UK spelling and construction terminology?",
+  "natural_check": "Would real users actually search these phrases?",
+  "volume_distribution": "Is there a mix of high, medium, and low competition terms?",
+  "uniqueness_check": "Are all keywords distinct without redundancy?",
+  "buyer_check": "Do keywords indicate purchase intent where appropriate?",
+  "semantic_check": "Are LSI/related terms genuinely connected?",
+  "competition_check": "Are keywords winnable for Gerald McDonald's authority?",
+  "ai_optimization": "Do keywords work for both traditional and AI search?",
+  "total_count": "Are there exactly 20-25 keywords across 5 categories?"
+}
+```
+
+**Output Contract**:
+Return ONLY the keyword categories and terms in specified format. Use pipe separator (|) between keyword and volume indicator. No additional text, explanations, or HTML.
+
+**Example Output Format**:
+PRIMARY KEYWORDS (High Competition/Volume)
+cement mixer | High
+concrete mixer | High  
+140l cement mixer | Medium
+belle mixer | Medium
+
+COMMERCIAL INTENT KEYWORDS
+cement mixer for sale uk | Medium
+buy concrete mixer online | Medium
+professional cement mixer supplier | Low
+cement mixer price uk | Medium
+
+LONG-TAIL KEYWORDS (Low Competition)
+portable electric cement mixer 140 litre | Low
+belle minimix 140 replacement parts | Low
+cement mixer hire vs buy calculator | Low
+best cement mixer for laying foundations | Low
+
+SEMANTIC/LSI KEYWORDS
+concrete mixing equipment | Medium
+mortar mixer | Medium
+building site mixer | Low
+construction mixing tools | Low
+
+LOCAL/UK-SPECIFIC KEYWORDS
+cement mixer supplier manchester | Low
+bs en 12151 compliant mixer | Low
+110v site cement mixer uk | Medium
+cement mixer next day delivery uk | Medium
+
+---
+
+## **Rationale:**
+This prompt leverages the playbook's principles by:
+- **Implementing structured data output** with clear categorization for strategic deployment
+- **Defining explicit requirements** including keyword counts and category types
+- **Incorporating market context** with UK-specific competition and search behavior
+- **Using comprehensive validation** through an 11-point SEO-specific check protocol
+- **Balancing search intent types** for comprehensive SERP coverage
+- **Including AI optimization** considering both traditional and AI-powered search
+- **Enforcing measurable outputs** with volume indicators for prioritization
+
+## **Adaptations/Tips:**
+- Replace `{URL}`, `{PRODUCT_TITLE}`, `{PRODUCT_CATEGORY}`, and `{INTRO_PARAGRAPH}` with actual values
+- Use these keywords to optimize meta tags, headers, and content distribution
+- Primary keywords should appear in title tags and H1 headers
+- Long-tail keywords work well in FAQ sections and use cases
+- Monitor keyword rankings monthly and adjust strategy based on performance
+- Cross-reference with Google Search Console for actual search queries
+- For Gerald McDonald, prioritize commercial/trade terms over DIY keywords
+- Consider seasonal variations (e.g., "winter concrete mixing" in cold months)
+- Use semantic keywords naturally throughout body content
+- Track which keywords drive conversions, not just traffic

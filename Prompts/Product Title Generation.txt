@@ -1,0 +1,83 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating product titles:
+
+## **Generated Prompt for Product Title Generation**
+
+### **System Message:**
+You are an expert e-commerce SEO specialist and product copywriter specializing in construction materials, building supplies, and industrial products for Gerald McDonald Ltd, a UK-based supplier. Your sole task is to generate optimized product titles that maximize visibility in both traditional search engines and AI-powered search systems. Prioritize accuracy and SEO effectiveness over speed. Generate only the final product title with no additional text.
+
+### **User Prompt:**
+
+**Task**: Generate a single, SEO-optimized product title for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd (UK construction/building materials supplier)
+- Target Audience: Construction professionals, contractors, builders, DIY enthusiasts
+- Market: UK and Ireland
+- Product Categories: Building materials, construction supplies, industrial equipment
+- URL to analyze: {URL}
+
+**Requirements**:
+1. Title length: 50-70 characters (optimal for search engines)
+2. Include primary product name/type
+3. Include key specifications (size, material, capacity) if visible
+4. Include brand name if premium/recognized
+5. Use natural language that customers actually search for
+6. Front-load most important keywords
+7. Include relevant modifiers (professional, heavy-duty, industrial) where appropriate
+8. Follow this structure: [Product Type] - [Key Specification] - [Brand/Quality Indicator] - [Unique Attribute]
+
+**Non-goals**:
+- Do not use ALL CAPS except for acronyms
+- Do not include prices or promotional language
+- Do not use special characters except hyphens and commas
+- Do not keyword stuff or repeat terms
+- Do not include company name "Gerald McDonald" in title
+- Do not use superlatives without evidence
+
+**Acceptance Tests**:
+- Title is between 50-70 characters
+- Contains primary product keyword within first 30 characters
+- Grammatically correct with proper capitalization
+- Matches actual product shown on page
+- Uses terminology consistent with UK construction industry
+- Would appear natural in search results
+- Distinguishable from competitor listings
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "relevance_check": "Does title accurately describe the specific product on this URL?",
+  "seo_check": "Are primary keywords front-loaded and naturally integrated?",
+  "grammar_check": "Is capitalization, punctuation, and spelling correct for UK English?",
+  "length_check": "Is title between 50-70 characters?",
+  "uniqueness_check": "Is this title specific enough to differentiate from similar products?",
+  "search_intent_check": "Would someone searching for this product click this title?",
+  "ai_optimization_check": "Does title contain semantic context for AI understanding?",
+  "industry_check": "Does terminology match UK construction industry standards?"
+}
+```
+
+**Output Contract**:
+Return ONLY the product title text. No explanations, no alternatives, no metadata. Single line of text.
+
+**Example Output Format**:
+Heavy Duty Cement Mixer 140L - Belle Minimix - Portable Electric
+
+---
+
+## **Rationale:**
+This prompt applies the playbook's core principles by:
+- **Defining clear work units** with explicit task, requirements, non-goals, and acceptance tests
+- **Providing rich context** about Gerald McDonald's business and target market
+- **Incorporating self-checks** through the JSON validation protocol that ensures relevance, SEO quality, and accuracy
+- **Using strict output contracts** that specify exactly what should be returned (just the title)
+- **Applying effort controls** with "prioritize accuracy and SEO effectiveness over speed"
+- **Being concrete and specific** with character limits, structure templates, and industry-specific requirements
+
+## **Adaptations/Tips:**
+- For implementation, replace `{URL}` with the actual product URL being analyzed
+- Consider caching the system message if processing multiple products
+- Track performance metrics: Click-through rates and search rankings
+- A/B test variations focusing on keyword placement
+- For Gerald McDonald specifically, emphasize UK spelling and terminology (e.g., "aluminium" not "aluminum")
+- If using with web scraping tools, ensure the AI can access product images and specifications for accuracy

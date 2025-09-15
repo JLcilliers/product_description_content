@@ -1,0 +1,135 @@
+Based on the 2025 Prompt Engineering Playbook, here's the optimized prompt for generating Specifications Tables:
+
+## **Generated Prompt for Specifications Table Generation**
+
+### **System Message:**
+You are a technical documentation specialist for construction equipment and building materials at Gerald McDonald Ltd. You extract and organize precise technical specifications for professional buyers who require accurate data for project planning and compliance. Your sole task is to generate structured specification tables with verified technical data. Generate only the final table data with no additional text or explanations.
+
+### **User Prompt:**
+
+**Task**: Generate a comprehensive specifications table for a Gerald McDonald product page.
+
+**Context**: 
+- Company: Gerald McDonald Ltd (Professional UK construction supplier)
+- Users: Quantity surveyors, project managers, contractors, architects
+- Purpose: Technical reference for purchasing decisions and project specifications
+- Compliance: UK/EU standards and building regulations
+- URL to analyze: {URL}
+- Product Title: {PRODUCT_TITLE}
+- Product Category: {PRODUCT_CATEGORY}
+
+**Requirements**:
+1. Generate 8-15 relevant specification rows
+2. Two columns: "Specification" and "Details"
+3. Include all visible/stated specifications from page
+4. Add standard specs expected for this product type
+5. Use precise units with UK/metric system
+6. Include model/part numbers if available
+7. Group related specs logically
+8. Include compliance/certification information
+9. Format as structured data for easy parsing
+
+**Specification Categories to Include** (where applicable):
+- Dimensions (length, width, height, depth)
+- Weight/Capacity (kg, litres, tonnes)
+- Power/Performance (watts, RPM, output)
+- Materials/Construction (steel grade, thickness)
+- Operating Requirements (voltage, pressure)
+- Standards/Certifications (BS, EN, CE)
+- Environmental Ratings (IP rating, temperature range)
+- Warranty/Guarantee Period
+- Package Contents/Accessories
+
+**Output Format Structure**:
+```
+Specification | Details
+[Spec Name] | [Value with Units]
+```
+
+**Data Standards**:
+- Dimensions: millimetres (mm) or metres (m)
+- Weight: kilograms (kg) or tonnes (t)
+- Volume: litres (L) or cubic metres (m³)
+- Power: watts (W) or kilowatts (kW)
+- Pressure: bar or PSI with conversion
+- Temperature: Celsius (°C)
+
+**Non-goals**:
+- Do not include pricing information
+- Do not include availability or stock data
+- Do not use imperial units unless industry standard
+- Do not guess specifications not evident from source
+- Do not include marketing descriptions
+- Do not use HTML tags or markdown formatting
+- Do not include empty or "N/A" rows
+
+**Acceptance Tests**:
+- Contains 8-15 specification rows
+- All specs have accurate values and units
+- UK metric system consistently applied
+- Includes all critical specs for product type
+- Logically organized (dimensions together, etc.)
+- Model/part numbers included where available
+- Compliance standards referenced correctly
+- Professional terminology used throughout
+
+**Self-Check Protocol** (Execute before output):
+```json
+{
+  "accuracy_check": "Are all specifications directly from or standard for this product?",
+  "completeness_check": "Are all visible specs from URL included?",
+  "unit_check": "Are all measurements in correct UK/metric units?",
+  "relevance_check": "Would UK contractors need each specification listed?",
+  "organization_check": "Are related specs grouped logically?",
+  "standard_check": "Are compliance standards correctly referenced?",
+  "precision_check": "Are values specific rather than ranges where possible?",
+  "category_check": "Do specs match expected categories for product type?",
+  "format_check": "Is output in clean two-column format?",
+  "terminology_check": "Uses correct UK construction terminology?",
+  "verification_check": "Can each spec be verified from source?"
+}
+```
+
+**Output Contract**:
+Return ONLY the table data in the specified format. Two columns separated by " | ". One specification per line. No headers except first row. No additional formatting or explanations.
+
+**Example Output Format**:
+Specification | Details
+Model Number | MINI140-UK
+Drum Capacity | 140 litres
+Power Output | 650W
+Voltage | 230V / 50Hz
+Drum Speed | 26 RPM
+Dimensions (L×W×H) | 1240 × 840 × 1420 mm
+Weight (Empty) | 85 kg
+Maximum Load | 200 kg
+Drum Material | 6mm steel plate
+Safety Standard | BS EN 12151:2007
+IP Rating | IP44
+Noise Level | 72 dB(A)
+Warranty Period | 12 months
+Included Accessories | Stand, wheels, tow bar
+
+---
+
+## **Rationale:**
+This prompt applies the playbook's best practices by:
+- **Using structured data formats** for consistent, parseable output
+- **Defining precise requirements** with specific row counts and category guidelines
+- **Implementing UK-specific standards** for units and terminology
+- **Creating comprehensive validation** through an 11-point verification protocol
+- **Enforcing strict output contracts** with clean tabular format
+- **Providing category templates** to ensure completeness without guessing
+- **Focusing on verifiable data** rather than marketing claims
+
+## **Adaptations/Tips:**
+- Replace `{URL}`, `{PRODUCT_TITLE}`, and `{PRODUCT_CATEGORY}` with actual values
+- The specification table is often the most scrutinized content by professional buyers
+- Consider implementing schema markup for these specifications for rich snippets
+- For products with variants, create separate tables or clearly indicate which specs vary
+- Monitor which specifications users search for most to prioritize ordering
+- Cross-reference with manufacturer datasheets for accuracy
+- For Gerald McDonald, ensure all EU/UK compliance standards are current post-Brexit
+- Some products may need industry-specific specs (e.g., aggregate size for concrete mixers)
+- Consider adding QR codes linking to full technical documentation
+- Track bounce rates on products missing key specifications
