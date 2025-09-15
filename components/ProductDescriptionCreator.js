@@ -292,6 +292,36 @@ const ProductDescriptionCreator = () => {
                     <h4 className="font-medium text-sm text-gray-700">Introduction</h4>
                     <p className="text-sm text-gray-600 line-clamp-3">{result.introduction}</p>
                   </div>
+                  {result.featuresAndBenefits && (
+                    <div>
+                      <h4 className="font-medium text-sm text-gray-700">Features & Benefits</h4>
+                      <ul className="text-sm text-gray-600 list-disc list-inside">
+                        {result.featuresAndBenefits.slice(0, 3).map((feature, i) => (
+                          <li key={i} className="line-clamp-1">{feature}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {result.technicalSpecs && (
+                    <div>
+                      <h4 className="font-medium text-sm text-gray-700">Technical Specifications</h4>
+                      <div className="text-sm text-gray-600">
+                        {Object.entries(result.technicalSpecs).slice(0, 3).map(([key, value], i) => (
+                          <div key={i}>{key}: {value}</div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {result.useCases && (
+                    <div>
+                      <h4 className="font-medium text-sm text-gray-700">Use Cases</h4>
+                      <ul className="text-sm text-gray-600 list-disc list-inside">
+                        {result.useCases.slice(0, 2).map((useCase, i) => (
+                          <li key={i} className="line-clamp-1">{useCase}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                   <div>
                     <h4 className="font-medium text-sm text-gray-700">SEO Keywords</h4>
                     <div className="flex flex-wrap gap-2 mt-1">
@@ -301,6 +331,16 @@ const ProductDescriptionCreator = () => {
                         </span>
                       ))}
                     </div>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-sm text-gray-700">Call to Action</h4>
+                    <p className="text-sm text-gray-600">{result.callToActions}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-sm text-gray-700">Structured Data (Schema.org)</h4>
+                    <pre className="text-xs bg-gray-50 p-2 rounded overflow-x-auto">
+                      {JSON.stringify(result.structuredData, null, 2).substring(0, 500)}...
+                    </pre>
                   </div>
                 </div>
               ) : (

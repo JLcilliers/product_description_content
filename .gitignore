@@ -35,3 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .vercel
+
+# sensitive files
+VERCEL_ENV.txt
+test-api.json
