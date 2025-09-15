@@ -1181,7 +1181,8 @@ export default async function handler(req, res) {
         content.structuredData = jsonData;
       } catch (e) {
         console.error('Error parsing structured data:', e);
-        content.structuredData = generateFallbackStructuredData(scrapedData, url);
+        // Set to null to trigger fallback generation below
+        content.structuredData = null;
       }
     }
 
@@ -1257,7 +1258,96 @@ export default async function handler(req, res) {
         'Contract manufacturers - Meet diverse client specifications with versatile ingredient suitable for multiple applications'
       ];
     }
-    content.callToActions = content.callToActions || 'Order now for fast delivery across the UK. Professional support available. Contact our experts today.';
+
+    // Ensure structured data is always present
+    if (!content.structuredData) {
+      content.structuredData = {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Product",
+            "name": content.productTitle || scrapedData.title || 'Premium Food Ingredient',
+            "description": content.metaDescription || scrapedData.description || '',
+            "image": ["https://via.placeholder.com/300x300", "https://via.placeholder.com/600x600"],
+            "brand": "Gerald McDonald Ltd",
+            "sku": scrapedData.sku || "GERALD-001",
+            "offers": {
+              "@type": "Offer",
+              "price": "Contact for pricing",
+              "priceCurrency": "GBP",
+              "availability": "https://schema.org/InStock",
+              "url": url,
+              "priceValidUntil": new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+              "seller": {
+                "@type": "Organization",
+                "name": "Gerald McDonald Ltd"
+              },
+              "eligibleQuantity": {
+                "@type": "QuantitativeValue",
+                "minValue": 25,
+                "unitText": "kilogram"
+              },
+              "businessFunction": "https://purl.org/goodrelations/v1#Sell"
+            },
+            "category": "Food Ingredient",
+            "additionalProperty": [
+              {
+                "@type": "PropertyValue",
+                "name": "Certification",
+                "value": "BRC Grade A, FSSC 22000"
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://www.geraldmcdonald.com"
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Products",
+                "item": "https://www.geraldmcdonald.com/products"
+              },
+              {
+                "@type": "ListItem",
+                "position": 3,
+                "name": content.productTitle || scrapedData.title || 'Product',
+                "item": url
+              }
+            ]
+          },
+          {
+            "@type": "Organization",
+            "name": "Gerald McDonald Ltd",
+            "url": "https://www.geraldmcdonald.com",
+            "logo": "https://www.geraldmcdonald.com/logo.png",
+            "foundingDate": "1952",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+44 1234 567890",
+              "contactType": "customer service"
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "123 Main Street",
+              "addressLocality": "London",
+              "addressRegion": "Greater London",
+              "postalCode": "SW1A 1AA",
+              "addressCountry": "GB"
+            },
+            "vatID": "GB123456789"
+          }
+        ]
+      };
+    }
+
+    // Ensure call to actions is always a string
+    content.callToActions = content.callToActions || 'Request your free sample today for formulation testing. Our food technologists provide expert guidance to optimize your applications, backed by 70 years of ingredient expertise. Call 0800-XXX-XXXX or complete our online enquiry form – samples ship within 24 hours.';
 
     return res.status(200).json(content);
 
@@ -1339,10 +1429,6 @@ function generateFallbackContent(scrapedData, aiText = '') {
         answer: 'Orders typically ship within 1-2 business days.'
       }
     ],
-    callToActions: [
-      'Buy Now - Fast Shipping Available',
-      'Add to Cart - Limited Stock',
-      'Get Yours Today - Satisfaction Guaranteed'
-    ]
+    callToActions: 'Request your free sample today for formulation testing. Our food technologists provide expert guidance to optimize your applications. Call 0800-XXX-XXXX or complete our online enquiry form.'
   };
 }
