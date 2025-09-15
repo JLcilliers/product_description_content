@@ -170,24 +170,48 @@ export default async function handler(req, res) {
             );
           }
 
-          if (result.seoKeywords.secondaryKeywords) {
+          if (result.seoKeywords.commercialIntent) {
             productSections.push(
               new Paragraph({
                 children: [
-                  new TextRun({ text: 'Secondary Keywords: ', bold: true }),
-                  new TextRun({ text: result.seoKeywords.secondaryKeywords.join(', ') })
+                  new TextRun({ text: 'Commercial Intent Keywords: ', bold: true }),
+                  new TextRun({ text: result.seoKeywords.commercialIntent.join(', ') })
                 ],
                 spacing: { after: 100 }
               })
             );
           }
 
-          if (result.seoKeywords.longTailKeywords) {
+          if (result.seoKeywords.longTail) {
             productSections.push(
               new Paragraph({
                 children: [
                   new TextRun({ text: 'Long-tail Keywords: ', bold: true }),
-                  new TextRun({ text: result.seoKeywords.longTailKeywords.join(', ') })
+                  new TextRun({ text: result.seoKeywords.longTail.join(', ') })
+                ],
+                spacing: { after: 100 }
+              })
+            );
+          }
+
+          if (result.seoKeywords.semantic) {
+            productSections.push(
+              new Paragraph({
+                children: [
+                  new TextRun({ text: 'Semantic Keywords: ', bold: true }),
+                  new TextRun({ text: result.seoKeywords.semantic.join(', ') })
+                ],
+                spacing: { after: 100 }
+              })
+            );
+          }
+
+          if (result.seoKeywords.localUK) {
+            productSections.push(
+              new Paragraph({
+                children: [
+                  new TextRun({ text: 'Local/UK Keywords: ', bold: true }),
+                  new TextRun({ text: result.seoKeywords.localUK.join(', ') })
                 ],
                 spacing: { after: 400 }
               })
@@ -223,24 +247,34 @@ export default async function handler(req, res) {
         }
 
         // Call to Actions
-        if (result.callToActions && Array.isArray(result.callToActions)) {
+        if (result.callToActions) {
           productSections.push(
             new Paragraph({
-              text: 'Call to Action Options',
+              text: 'Call to Action',
               heading: HeadingLevel.HEADING_2,
               spacing: { before: 400, after: 200 }
+            }),
+            new Paragraph({
+              text: result.callToActions,
+              spacing: { after: 400 }
             })
           );
+        }
 
-          result.callToActions.forEach(cta => {
-            productSections.push(
-              new Paragraph({
-                text: `• ${cta}`,
-                spacing: { after: 100 },
-                indent: { left: 360 }
-              })
-            );
-          });
+        // Structured Data (Schema.org)
+        if (result.structuredData) {
+          productSections.push(
+            new Paragraph({
+              text: 'Structured Data (Schema.org JSON-LD)',
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 400, after: 200 }
+            }),
+            new Paragraph({
+              text: JSON.stringify(result.structuredData, null, 2),
+              spacing: { after: 400 },
+              style: 'Code'
+            })
+          );
         }
 
       } else {
