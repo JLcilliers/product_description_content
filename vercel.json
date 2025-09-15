@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "pages/api/scrape.js": {
+      "maxDuration": 30
+    },
+    "pages/api/generate-content.js": {
+      "maxDuration": 30
+    },
+    "pages/api/export-word.js": {
+      "maxDuration": 30
+    }
+  }
+}
