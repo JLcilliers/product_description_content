@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { url } = req.body;
+  const { url, productName, category } = req.body;
 
   if (!url) {
     return res.status(400).json({ error: 'URL is required' });
@@ -70,6 +70,14 @@ export default async function handler(req, res) {
         extractedData.specifications[key] = value;
       }
     });
+
+    // Add Excel-provided product data if available
+    if (productName) {
+      extractedData.providedProductName = productName;
+    }
+    if (category) {
+      extractedData.providedCategory = category;
+    }
 
     // Extract additional content
     extractedData.additionalContent = [];

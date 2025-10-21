@@ -966,22 +966,32 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { url, scrapedData } = req.body;
+  const { url, scrapedData, productName, category } = req.body;
 
   if (!url || !scrapedData) {
     return res.status(400).json({ error: 'URL and scraped data are required' });
   }
 
+  // Build Excel product info context if provided
+  const excelProductInfo = productName || category ? `
+
+**IMPORTANT - Excel-Provided Product Information:**
+${productName ? `- Product Name: ${productName}` : ''}
+${category ? `- Category: ${category}` : ''}
+
+This information was explicitly provided via Excel file upload. Give this information highest priority when generating descriptions.` : '';
+
   try {
     const productInfo = `
-      Product URL: ${url}
-      Title: ${scrapedData.title || 'Unknown Product'}
-      Description: ${scrapedData.description || 'No description available'}
-      Price: ${scrapedData.price || 'Price not available'}
-      Features: ${scrapedData.features?.join(', ') || 'No features listed'}
-      Specifications: ${JSON.stringify(scrapedData.specifications) || '{}'}
-      Additional Content: ${scrapedData.additionalContent?.join(' ') || ''}
-    `;
+    Product URL: ${url}
+    Title: ${scrapedData.title || 'Unknown Product'}
+    Description: ${scrapedData.description || 'No description available'}
+    Price: ${scrapedData.price || 'Price not available'}
+    Features: ${scrapedData.features?.join(', ') || 'No features listed'}
+    Specifications: ${JSON.stringify(scrapedData.specifications) || '{}'}
+    Additional Content: ${scrapedData.additionalContent?.join(' ') || ''}
+${excelProductInfo}
+`;
 
     // Generate content using Gerald McDonald's specialized prompts
     const content = {};
@@ -990,14 +1000,14 @@ export default async function handler(req, res) {
     async function generateWithPrompt(promptKey, additionalContext = {}) {
       const prompt = PROMPTS[promptKey];
       let userPrompt = prompt.user
-        .replace('{URL}', url)
-        .replace('{PRODUCT_TITLE}', content.productTitle || scrapedData.title || 'Product')
-        .replace('{META_DESCRIPTION}', content.metaDescription || '')
-        .replace('{INTRO_PARAGRAPH}', content.introduction || '')
-        .replace('{SPECIFICATIONS_TABLE}', content.technicalSpecs || '')
-        .replace('{USE_CASES}', content.useCases || '')
-        .replace('{FEATURES_BENEFITS}', content.featuresAndBenefits || '')
-        .replace('{PRODUCT_CATEGORY}', additionalContext.productCategory || 'Construction Equipment');
+      .replace('{URL}', url)
+      .replace('{PRODUCT_TITLE}', content.productTitle || scrapedData.providedProductName || productName || scrapedData.title || 'Product')
+      .replace('{META_DESCRIPTION}', content.metaDescription || '')
+      .replace('{INTRO_PARAGRAPH}', content.introduction || '')
+      .replace('{SPECIFICATIONS_TABLE}', content.technicalSpecs || '')
+      .replace('{USE_CASES}', content.useCases || '')
+      .replace('{FEATURES_BENEFITS}', content.featuresAndBenefits || '')
+      .replace('{PRODUCT_CATEGORY}', additionalContext.productCategory || scrapedData.providedCategory || category || 'Construction Equipment');
 
       // Add product information context
       userPrompt += `\n\n**Product Information**:\n${productInfo}`;

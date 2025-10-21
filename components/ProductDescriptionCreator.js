@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Upload, Link, FileText, Download, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import * as XLSX from 'xlsx';
 
 const ProductDescriptionCreator = () => {
   const [urls, setUrls] = useState([]);
+  const [products, setProducts] = useState([]); // New: structured product data with name, category, url
   const [manualUrl, setManualUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
@@ -12,21 +14,81 @@ const ProductDescriptionCreator = () => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const text = e.target.result;
-          const lines = text.split('\n');
-          const extractedUrls = lines
-            .map(line => line.trim())
-            .filter(line => line.startsWith('http'));
-          setUrls(extractedUrls);
-          setError(null);
-        } catch (err) {
-          setError('Failed to read file. Please ensure it contains valid URLs.');
-        }
-      };
-      reader.readAsText(file);
+      const fileName = file.name.toLowerCase();
+
+      if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+        // Handle Excel files
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+            const extractedProducts = [];
+            const extractedUrls = [];
+            
+            // Skip header row (index 0) and process data rows
+            jsonData.forEach((row, index) => {
+              if (index === 0) return; // Skip header row
+              
+              // Column A = Product Name (index 0)
+              // Column B = Category (index 1)
+              // Column C = URL (index 2)
+              const productName = row[0] ? String(row[0]).trim() : '';
+              const category = row[1] ? String(row[1]).trim() : '';
+              const url = row[2] ? String(row[2]).trim() : '';
+              
+              // Only add if URL exists and starts with http
+              if (url && url.startsWith('http')) {
+                extractedProducts.push({
+                  productName,
+                  category,
+                  url
+                });
+                extractedUrls.push(url);
+              }
+            });
+
+            if (extractedProducts.length === 0) {
+              setError('No valid product data found in the Excel file. Please ensure:\n- Column A: Product Name\n- Column B: Category\n- Column C: URL (starting with http:// or https://)');
+            } else {
+              setProducts(extractedProducts);
+              setUrls(extractedUrls);
+              setError(null);
+            }
+          } catch (err) {
+            setError('Failed to read Excel file. Please ensure it is a valid Excel file.');
+            console.error('Excel parsing error:', err);
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      } else if (fileName.endsWith('.csv') || fileName.endsWith('.txt')) {
+        // Handle CSV and text files
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const text = e.target.result;
+            const lines = text.split(/[\n\r,]+/); // Split by newlines and commas for CSV
+            const extractedUrls = lines
+              .map(line => line.trim())
+              .filter(line => line.startsWith('http'));
+
+            if (extractedUrls.length === 0) {
+              setError('No URLs found in the file. Please ensure URLs start with http:// or https://');
+            } else {
+              setUrls(extractedUrls);
+              setError(null);
+            }
+          } catch (err) {
+            setError('Failed to read file. Please ensure it contains valid URLs.');
+          }
+        };
+        reader.readAsText(file);
+      } else {
+        setError('Unsupported file type. Please upload an Excel (.xlsx, .xls), CSV, or text file.');
+      }
     }
   };
 
@@ -57,42 +119,113 @@ const ProductDescriptionCreator = () => {
 
     for (let i = 0; i < urls.length; i++) {
       const url = urls[i];
+      const product = products[i] || { productName: '', category: '', url: url };
       setProgress({ current: i + 1, total: urls.length });
 
       try {
-        // Step 1: Scrape the URL
-        const scrapeResponse = await fetch('/api/scrape', {
+        // Step 1: Enhanced Scraping
+        const scrapeResponse = await fetch('/api/scrape-enhanced', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url })
-        });
-
-        if (!scrapeResponse.ok) {
-          throw new Error(`Failed to scrape ${url}`);
-        }
-
-        const scrapedData = await scrapeResponse.json();
-
-        // Step 2: Generate content
-        const contentResponse = await fetch('/api/generate-content', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
+          body: JSON.stringify({ 
             url,
-            scrapedData
+            productName: product.productName,
+            category: product.category
           })
         });
 
-        if (!contentResponse.ok) {
-          throw new Error(`Failed to generate content for ${url}`);
-        }
+        if (!scrapeResponse.ok) {
+          // Fallback to basic scraping if enhanced fails
+          const fallbackResponse = await fetch('/api/scrape', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              url,
+              productName: product.productName,
+              category: product.category
+            })
+          });
 
-        const content = await contentResponse.json();
-        newResults.push({
-          url,
-          ...content,
-          success: true
-        });
+          if (!fallbackResponse.ok) {
+            throw new Error(`Failed to scrape ${url}`);
+          }
+
+          const scrapedData = await fallbackResponse.json();
+          console.log('Using fallback scraping for:', url);
+
+          // Use basic content generation for fallback
+          const contentResponse = await fetch('/api/generate-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              url, 
+              scrapedData,
+              productName: product.productName,
+              category: product.category
+            })
+          });
+
+          if (!contentResponse.ok) {
+            throw new Error(`Failed to generate content for ${url}`);
+          }
+
+          const content = await contentResponse.json();
+          newResults.push({
+            url,
+            ...content,
+            success: true,
+            fallbackUsed: true
+          });
+        } else {
+          const scrapedData = await scrapeResponse.json();
+          console.log('Enhanced scraping successful for:', url);
+
+          // Step 2: Generate content with business research
+          const contentResponse = await fetch('/api/generate-content-v2', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              url,
+              scrapedData,
+              productName: product.productName,
+              category: product.category
+            })
+          });
+
+          if (!contentResponse.ok) {
+            // Fallback to original content generation
+            const fallbackContentResponse = await fetch('/api/generate-content', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                url, 
+              scrapedData,
+              productName: product.productName,
+              category: product.category
+            })
+          });
+
+            if (!fallbackContentResponse.ok) {
+              throw new Error(`Failed to generate content for ${url}`);
+            }
+
+            const content = await fallbackContentResponse.json();
+            newResults.push({
+              url,
+              ...content,
+              success: true,
+              fallbackUsed: true
+            });
+          } else {
+            const content = await contentResponse.json();
+            newResults.push({
+              url,
+              ...content,
+              success: true,
+              enhancedGeneration: true
+            });
+          }
+        }
 
       } catch (err) {
         console.error(`Error processing ${url}:`, err);
@@ -269,15 +402,27 @@ const ProductDescriptionCreator = () => {
             <div key={index} className="border rounded-lg p-6 space-y-4">
               <div className="flex items-start justify-between">
                 <h3 className="font-semibold text-lg">{result.productTitle || 'Product ' + (index + 1)}</h3>
-                {result.success ? (
-                  <span className="text-green-600 text-sm flex items-center">
-                    <CheckCircle className="w-4 h-4 mr-1" /> Success
-                  </span>
-                ) : (
-                  <span className="text-red-600 text-sm flex items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" /> Failed
-                  </span>
-                )}
+                <div className="flex items-center gap-2">
+                  {result.enhancedGeneration && (
+                    <span className="text-blue-600 text-xs bg-blue-100 px-2 py-1 rounded">
+                      Enhanced AI
+                    </span>
+                  )}
+                  {result.fallbackUsed && (
+                    <span className="text-yellow-600 text-xs bg-yellow-100 px-2 py-1 rounded">
+                      Basic Mode
+                    </span>
+                  )}
+                  {result.success ? (
+                    <span className="text-green-600 text-sm flex items-center">
+                      <CheckCircle className="w-4 h-4 mr-1" /> Success
+                    </span>
+                  ) : (
+                    <span className="text-red-600 text-sm flex items-center">
+                      <AlertCircle className="w-4 h-4 mr-1" /> Failed
+                    </span>
+                  )}
+                </div>
               </div>
 
               <p className="text-sm text-gray-600 truncate">{result.url}</p>
