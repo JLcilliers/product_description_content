@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
-const { getPromptsForCategory } = require('../../lib/prompts/selector.js');
+import path from 'path';
+const { getPromptsForCategory } = require(path.resolve(process.cwd(), 'lib/prompts/selector.js'));
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
