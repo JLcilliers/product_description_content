@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { getPromptsForCategory } from '../../lib/prompts/selector';
+import { getPromptsForCategory } from '../../lib/prompts/selector.js';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,

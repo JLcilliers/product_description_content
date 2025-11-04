@@ -188,12 +188,11 @@ const ProductDescriptionCreator = () => {
         };
         reader.readAsText(file);
 
-        // Clear the file input so the same file can be re-uploaded if needed
-        event.target.value = '';
-      } else {
-        setError('Unsupported file type. Please upload an Excel (.xlsx, .xls), CSV, or text file.');
-        event.target.value = '';
-      }
+      // Clear the file input so the same file can be re-uploaded if needed
+      event.target.value = '';
+    } else {
+      setError('Unsupported file type. Please upload an Excel (.xlsx, .xls), CSV, or text file.');
+      event.target.value = '';
     }
   };
 
