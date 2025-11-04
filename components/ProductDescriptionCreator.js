@@ -13,81 +13,186 @@ const ProductDescriptionCreator = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      const fileName = file.name.toLowerCase();
+    if (!file) {
+      console.log('No file selected');
+      return;
+    }
 
-      if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
-        // Handle Excel files
+    console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+    const fileName = file.name.toLowerCase();
+
+    if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+      // Handle Excel files
+      console.log('Processing Excel file...');
+      const reader = new FileReader();
+
+      reader.onerror = (error) => {
+        console.error('FileReader error:', error);
+        setError('Failed to read the file. Please try again.');
+      };
+
+      reader.onload = (e) => {
+        try {
+          console.log('File loaded, parsing Excel...');
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+
+          console.log('Workbook sheets:', workbook.SheetNames);
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+
+          // Parse with headers to get objects with column names
+          const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+          console.log('Parsed Excel data:', jsonData);
+          console.log('Number of rows:', jsonData.length);
+
+          if (jsonData.length === 0) {
+            setError('The Excel file appears to be empty. Please check your file.');
+            return;
+          }
+
+          // Log the first row to see what columns are available
+          if (jsonData.length > 0) {
+            console.log('First row columns:', Object.keys(jsonData[0]));
+          }
+
+          const extractedProducts = [];
+          const extractedUrls = [];
+
+          // Process each row as an object with column headers as keys
+          jsonData.forEach((row, index) => {
+            console.log(`Processing row ${index + 1}:`, row);
+
+            // Support various common column name variations (case-insensitive)
+            const getColumnValue = (possibleNames) => {
+              for (const name of possibleNames) {
+                const value = row[name];
+                if (value !== undefined && value !== null) {
+                  return String(value).trim();
+                }
+              }
+              return '';
+            };
+
+            const productName = getColumnValue(['Product Name', 'ProductName', 'Product', 'Name', 'Title']);
+            const category = getColumnValue(['Category', 'Type', 'Product Type', 'ProductType']);
+            const url = getColumnValue(['URL', 'Url', 'url', 'Link', 'Website', 'Product URL', 'ProductURL']);
+
+            console.log(`  - Product Name: "${productName}"`);
+            console.log(`  - Category: "${category}"`);
+            console.log(`  - URL: "${url}"`);
+            console.log(`  - URL valid? ${url && url.startsWith('http')}`);
+
+            // Only add if URL exists and starts with http
+            if (url && url.startsWith('http')) {
+              extractedProducts.push({
+                productName: productName || 'Untitled Product',
+                category: category || 'General',
+                url
+              });
+              extractedUrls.push(url);
+            }
+          });
+
+          console.log(`Extracted ${extractedUrls.length} valid URLs from ${jsonData.length} rows`);
+
+          if (extractedProducts.length === 0) {
+            setError('No valid URLs found in the Excel file. Please ensure:\n- You have a column header named "URL" (or similar: Link, Website, etc.)\n- URLs start with http:// or https://\n- Optional columns: "Product Name" and "Category"\n\nAvailable columns: ' + (jsonData.length > 0 ? Object.keys(jsonData[0]).join(', ') : 'none'));
+          } else {
+            console.log('Successfully extracted URLs:', extractedUrls);
+            setProducts(extractedProducts);
+            setUrls(extractedUrls);
+            setError(null);
+          }
+        } catch (err) {
+          console.error('Excel parsing error:', err);
+          setError('Failed to read Excel file: ' + err.message + '. Please ensure it is a valid Excel file.');
+        }
+      };
+      reader.readAsArrayBuffer(file);
+
+      // Clear the file input so the same file can be re-uploaded if needed
+      event.target.value = '';
+    } else if (fileName.endsWith('.csv') || fileName.endsWith('.txt')) {
+        // Handle CSV and text files
         const reader = new FileReader();
         reader.onload = (e) => {
           try {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: 'array' });
-            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+            const text = e.target.result;
+            const lines = text.split(/\r?\n/).filter(line => line.trim());
 
             const extractedProducts = [];
             const extractedUrls = [];
-            
-            // Skip header row (index 0) and process data rows
-            jsonData.forEach((row, index) => {
-              if (index === 0) return; // Skip header row
-              
-              // Column A = Product Name (index 0)
-              // Column B = Category (index 1)
-              // Column C = URL (index 2)
-              const productName = row[0] ? String(row[0]).trim() : '';
-              const category = row[1] ? String(row[1]).trim() : '';
-              const url = row[2] ? String(row[2]).trim() : '';
-              
-              // Only add if URL exists and starts with http
-              if (url && url.startsWith('http')) {
-                extractedProducts.push({
-                  productName,
-                  category,
-                  url
-                });
-                extractedUrls.push(url);
-              }
-            });
 
-            if (extractedProducts.length === 0) {
-              setError('No valid product data found in the Excel file. Please ensure:\n- Column A: Product Name\n- Column B: Category\n- Column C: URL (starting with http:// or https://)');
+            // Check if first line looks like headers (contains common header keywords)
+            const firstLine = lines[0]?.toLowerCase() || '';
+            const hasHeaders = /url|link|product|category|name/.test(firstLine);
+
+            if (hasHeaders && lines.length > 1) {
+              // Parse CSV with headers
+              const headers = lines[0].split(',').map(h => h.trim());
+              const urlIndex = headers.findIndex(h =>
+                /^(url|link|website|product url)$/i.test(h.trim())
+              );
+              const nameIndex = headers.findIndex(h =>
+                /^(product name|name|title|product)$/i.test(h.trim())
+              );
+              const categoryIndex = headers.findIndex(h =>
+                /^(category|type|product type)$/i.test(h.trim())
+              );
+
+              // Process data rows (skip header row)
+              for (let i = 1; i < lines.length; i++) {
+                const values = lines[i].split(',').map(v => v.trim());
+                const url = urlIndex !== -1 ? values[urlIndex] : values[0];
+
+                if (url && url.startsWith('http')) {
+                  extractedProducts.push({
+                    productName: (nameIndex !== -1 ? values[nameIndex] : '') || 'Untitled Product',
+                    category: (categoryIndex !== -1 ? values[categoryIndex] : '') || 'General',
+                    url
+                  });
+                  extractedUrls.push(url);
+                }
+              }
+            } else {
+              // Parse as simple URL list (no headers)
+              const startIndex = hasHeaders ? 1 : 0;
+              for (let i = startIndex; i < lines.length; i++) {
+                const line = lines[i].trim();
+                // Try to extract URL from line (might be comma-separated)
+                const parts = line.split(',').map(p => p.trim());
+                const url = parts.find(p => p.startsWith('http')) || parts[0];
+
+                if (url && url.startsWith('http')) {
+                  extractedProducts.push({
+                    productName: 'Untitled Product',
+                    category: 'General',
+                    url
+                  });
+                  extractedUrls.push(url);
+                }
+              }
+            }
+
+            if (extractedUrls.length === 0) {
+              setError('No URLs found in the file. Please ensure URLs start with http:// or https://');
             } else {
               setProducts(extractedProducts);
               setUrls(extractedUrls);
               setError(null);
             }
           } catch (err) {
-            setError('Failed to read Excel file. Please ensure it is a valid Excel file.');
-            console.error('Excel parsing error:', err);
-          }
-        };
-        reader.readAsArrayBuffer(file);
-      } else if (fileName.endsWith('.csv') || fileName.endsWith('.txt')) {
-        // Handle CSV and text files
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          try {
-            const text = e.target.result;
-            const lines = text.split(/[\n\r,]+/); // Split by newlines and commas for CSV
-            const extractedUrls = lines
-              .map(line => line.trim())
-              .filter(line => line.startsWith('http'));
-
-            if (extractedUrls.length === 0) {
-              setError('No URLs found in the file. Please ensure URLs start with http:// or https://');
-            } else {
-              setUrls(extractedUrls);
-              setError(null);
-            }
-          } catch (err) {
             setError('Failed to read file. Please ensure it contains valid URLs.');
+            console.error('CSV parsing error:', err);
           }
         };
         reader.readAsText(file);
+
+        // Clear the file input so the same file can be re-uploaded if needed
+        event.target.value = '';
       } else {
         setError('Unsupported file type. Please upload an Excel (.xlsx, .xls), CSV, or text file.');
+        event.target.value = '';
       }
     }
   };
