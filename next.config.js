@@ -5,6 +5,15 @@ const nextConfig = {
   poweredByHeader: false,
   compress: true,
 
+  webpack: (config, { isServer }) => {
+    // Enable ES modules resolution for lib directory
+    config.resolve.extensionAlias = {
+      '.js': ['.js', '.ts', '.tsx', '.jsx'],
+    };
+
+    return config;
+  },
+
   async headers() {
     return [
       {
