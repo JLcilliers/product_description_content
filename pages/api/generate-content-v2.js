@@ -75,11 +75,14 @@ const DEFAULT_PROMPTS = {
 - Features: {FEATURES}
 
 **SEO Requirements**:
-1. Length: 50-70 characters for optimal SERP display
-2. Include primary product keyword within first 30 characters
-3. Include key specifications (concentration, form, certification) if available
-4. Use natural language that food industry professionals actually search for
-5. Structure: [Product Type] - [Key Attribute/Form] - [Quality Indicator]
+1. Length: 60-80 characters for optimal SERP display
+2. Include primary product keyword at the start
+3. Add descriptive qualifiers (Premium, Industrial, Professional-Grade, etc.)
+4. Include key specifications or certifications if available (BRC Certified, Food-Grade, etc.)
+5. Use natural language that industry professionals actually search for
+6. Structure: [Descriptor] [Product Type] | [Key Attribute] | [Certification/Quality]
+
+**Example Format**: "Premium Apple Medium Acid Puree | Food-Grade Industrial Ingredient | BRC Certified"
 
 Generate ONLY the product title. No explanations.`
   },
@@ -121,13 +124,15 @@ Generate ONLY the meta description. No explanations.`
 - Key Features: {FEATURES}
 
 **Requirements**:
-1. Length: 60-80 words
-2. Opening sentence must include primary keyword naturally
-3. Include specific application or use case
-4. Mention quality indicator or certification if available
-5. Reference Gerald McDonald's expertise (since 1952)
-6. Answer the "what is this?" question immediately
-7. Optimize for featured snippet extraction
+1. Length: 80-120 words (more comprehensive)
+2. First sentence: Define what the product is and its primary use
+3. Second sentence: Mention Gerald McDonald as the UK's leading/trusted BRC-certified supplier since 1952
+4. Third sentence: Highlight key quality attributes and certifications
+5. Fourth sentence: Mention ideal applications or target industries
+6. Use specific, concrete language - avoid generic descriptions
+7. Include relevant industry terminology
+
+**Example opening**: "[Product] is a versatile food ingredient essential for manufacturers producing [applications]. As the UK's leading BRC-certified supplier since 1952, Gerald McDonald provides this high-quality [product] with consistent [attributes], perfect for industrial food production..."
 
 Generate ONLY the paragraph. No explanations.`
   },
@@ -146,13 +151,21 @@ Generate ONLY the paragraph. No explanations.`
 {SPECIFICATIONS}
 
 **Requirements**:
-1. Generate 5-7 bullet points
-2. Each bullet: 15-25 words
-3. Start with feature, follow with specific benefit
+1. Generate exactly 6 bullet points
+2. Each bullet: 20-30 words
+3. Format: Start with capability/feature, then "enables/ensures/guarantees" + specific business benefit with measurable outcome
 4. Use bullet character: •
-5. Include mix of quality, functionality, and compliance benefits
-6. Use power words (premium, certified, enhances, optimizes)
-7. Address food industry pain points
+5. Include these themes:
+   - Custom capabilities (flexibility, no minimums)
+   - Certifications and compliance (BRC, food safety standards)
+   - Supply chain advantages (UK location, delivery, reliability)
+   - Technical support (R&D, trial services, formulation help)
+   - Market access (certifications for specialty markets)
+   - Quality consistency (automated systems, batch control)
+6. Use power verbs: enables, ensures, guarantees, delivers, accelerates, reduces
+7. Include specific outcomes: "reducing inventory costs", "faster time-to-market", "enhanced product marketability"
+
+**Example**: "• Custom blending capabilities with no minimum order quantities enable precise recipe development while reducing inventory costs and waste."
 
 Generate ONLY bullet points. No headers or explanations.`
   },
@@ -194,12 +207,20 @@ Specification | Details
 **Target Market**: {TARGET_MARKET}
 
 **Requirements**:
-1. Generate 6-8 use cases
-2. Each: 20-35 words
-3. Format with • character
-4. Mix beverages, food products, specialist applications
-5. Include specific formulation benefits
-6. Reference UK food industry scenarios
+1. Generate exactly 8 use cases
+2. Each: 30-40 words
+3. Format: "• Perfect/Ideal/Essential/Excellent for [specific customer type] [seeking/requiring specific need] - [provides/delivers/offers specific benefit with technical detail]."
+4. Include diverse customer types:
+   - Craft/artisanal manufacturers
+   - Premium/luxury brands
+   - Health-focused/clean-label producers
+   - Industrial/large-scale manufacturers
+   - Specialist/niche applications
+5. Include specific technical benefits (viscosity, stability, fermentation, moisture retention, etc.)
+6. Reference real UK market segments (British craft, premium ready-meals, etc.)
+7. Use descriptive adjectives: premium, luxury, artisanal, gourmet, health-focused
+
+**Example**: "• Perfect for premium British craft cider makers seeking a consistent base - provides reliable fermentation characteristics and authentic apple flavor while maintaining year-round production standards."
 
 Generate ONLY bullet points. No headers.`
   },
@@ -249,12 +270,25 @@ Include 20-25 total keywords. Use UK spelling.`
 **Specifications**: {SPECIFICATIONS}
 
 **Requirements**:
-1. Generate 6-8 Q&A pairs
-2. Question: 8-15 words (natural search queries)
-3. Answer: 40-60 words (featured snippet optimal)
+1. Generate exactly 7 Q&A pairs
+2. Question: 10-18 words (natural search queries starting with What/How/Can/Do/Does)
+3. Answer: 50-70 words (detailed, featured snippet optimal)
 4. Format: Q: [question]\\nA: [answer]
-5. Cover technical, practical, and commercial questions
-6. Reference UK/EU food regulations where relevant
+5. Cover these topics in order:
+   - Certifications and compliance
+   - Quality assurance processes
+   - Minimum order quantities and flexibility
+   - Lead time and development process
+   - Sampling availability
+   - Storage and handling requirements
+   - Technical support and applications assistance
+6. Include specific details: mention BRC, Gerald McDonald's Basildon facility, UK/EU regulations
+7. Use conversational but professional tone
+8. Include company contact methods in relevant answers
+
+**Example**:
+Q: What certifications does Gerald McDonald's [product] meet for food manufacturing?
+A: Gerald McDonald's [product] meets BRC certification standards and is available with Kosher, Halal, and Organic certifications upon request. All products comply with UK and EU food safety regulations and are manufactured in our BRC-certified Basildon facility.
 
 Generate ONLY Q&A pairs. One blank line between pairs.`
   },
@@ -270,13 +304,18 @@ Generate ONLY Q&A pairs. One blank line between pairs.`
 **Key Benefits**: {FEATURES}
 
 **Requirements**:
-1. Length: 40-60 words total
-2. Include action verb (Request, Order, Contact)
-3. Reference samples or technical support
-4. Mention Gerald McDonald's 70+ years expertise
-5. Include contact method
+1. Length: 50-65 words
+2. Structure: [Action headline] | [Value proposition with expertise] [Contact methods with specific details]
+3. Start with "Request Your [Product Type] Sample Today" or similar action-oriented headline
+4. Mention "Backed by 70+ years of ingredient expertise" or similar credibility statement
+5. Include "technical team" or "specialists" ready to support
+6. Provide specific contact: phone number format "+44 (0)1268 244900" and email "ingredients@geraldmcdonald.com"
+7. Mention "immediate sampling" or "specification assistance"
+8. Use power words: backed, comprehensive, immediate, specialist
 
-Generate ONLY the CTA text. No formatting.`
+**Example**: "Request Your Custom [Product] Sample Today | Backed by 70+ years of ingredient expertise, our technical team is ready to support your next product innovation. Contact our specialists at +44 (0)1268 244900 or email ingredients@geraldmcdonald.com for immediate sampling and specification assistance."
+
+Generate ONLY the CTA text. No additional formatting or headers.`
   }
 };
 
@@ -510,6 +549,9 @@ Business Model: B2B Supplier`;
     }
 
     // Generate structured data
+    const companyName = scrapedData.businessInfo?.companyName || "Gerald McDonald Ltd";
+    const foundingDate = scrapedData.businessInfo?.founded || "1952";
+
     content.structuredData = {
       "@context": "https://schema.org",
       "@graph": [
@@ -520,11 +562,12 @@ Business Model: B2B Supplier`;
           "image": scrapedData.images?.map(img => typeof img === 'string' ? img : img.url) || [],
           "brand": {
             "@type": "Brand",
-            "name": scrapedData.businessInfo?.companyName || "Product Manufacturer"
+            "name": companyName
           },
           "manufacturer": {
             "@type": "Organization",
-            "name": scrapedData.businessInfo?.companyName || "Product Manufacturer"
+            "name": companyName,
+            "foundingDate": foundingDate
           },
           "offers": {
             "@type": "Offer",
@@ -533,7 +576,7 @@ Business Model: B2B Supplier`;
             "availability": "https://schema.org/InStock",
             "seller": {
               "@type": "Organization",
-              "name": scrapedData.businessInfo?.companyName || "Product Manufacturer"
+              "name": companyName
             }
           }
         }
