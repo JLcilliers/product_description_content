@@ -3,8 +3,14 @@
     "pages/api/scrape.js": {
       "maxDuration": 30
     },
+    "pages/api/scrape-enhanced.js": {
+      "maxDuration": 30
+    },
     "pages/api/generate-content.js": {
       "maxDuration": 30
+    },
+    "pages/api/generate-content-v2.js": {
+      "maxDuration": 60
     },
     "pages/api/export-word.js": {
       "maxDuration": 30
