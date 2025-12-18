@@ -1061,12 +1061,32 @@ ${excelProductInfo}
     content.faqs = parallelGenerations[5];
     content.callToActions = parallelGenerations[6];
 
-    // Process and format some content types
+    // Process and format some content types - handle multiple bullet formats
     if (content.featuresAndBenefits) {
-      content.featuresAndBenefits = content.featuresAndBenefits
-        .split('\n')
-        .filter(line => line.trim().startsWith('•'))
-        .map(line => line.trim().substring(1).trim());
+      const rawContent = content.featuresAndBenefits;
+      const lines = rawContent.split('\n');
+
+      const bullets = lines
+        .map(line => line.trim())
+        .filter(line => {
+          return line.startsWith('•') ||
+                 line.startsWith('-') ||
+                 line.startsWith('*') ||
+                 /^\d+\./.test(line);
+        })
+        .map(line => {
+          if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+            return line.substring(1).trim();
+          }
+          return line.replace(/^\d+\.\s*/, '').trim();
+        })
+        .filter(line => line.length > 0);
+
+      if (bullets.length > 0) {
+        content.featuresAndBenefits = bullets;
+      } else {
+        content.featuresAndBenefits = [rawContent.trim()];
+      }
     }
 
     if (content.seoKeywords) {
@@ -1168,16 +1188,32 @@ ${excelProductInfo}
       }
     }
 
-    // Parse use cases from bullet format
+    // Parse use cases from bullet format - handle multiple formats
     if (content.useCases) {
       try {
-        const useCasesList = content.useCases
-          .split('\n')
-          .filter(line => line.trim().startsWith('•'))
-          .map(line => line.trim().substring(1).trim());
+        const rawContent = content.useCases;
+        const lines = rawContent.split('\n');
 
-        if (useCasesList.length > 0) {
-          content.useCases = useCasesList;
+        const bullets = lines
+          .map(line => line.trim())
+          .filter(line => {
+            return line.startsWith('•') ||
+                   line.startsWith('-') ||
+                   line.startsWith('*') ||
+                   /^\d+\./.test(line);
+          })
+          .map(line => {
+            if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+              return line.substring(1).trim();
+            }
+            return line.replace(/^\d+\.\s*/, '').trim();
+          })
+          .filter(line => line.length > 0);
+
+        if (bullets.length > 0) {
+          content.useCases = bullets;
+        } else {
+          content.useCases = [rawContent.trim()];
         }
       } catch (e) {
         console.error('Error parsing use cases:', e);
