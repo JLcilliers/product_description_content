@@ -1,5 +1,10 @@
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, AlignmentType, PageBreak } from 'docx';
 
+// Default font settings - Poppins size 12
+const DEFAULT_FONT = 'Poppins';
+const DEFAULT_FONT_SIZE = 24; // Size in half-points (12pt = 24 half-points)
+const HEADING_FONT_SIZE = 28; // 14pt for headings
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -21,12 +26,24 @@ export default async function handler(req, res) {
       // 1. Page Name (Title)
       productSections.push(
         new Paragraph({
-          text: 'Page Name',
-          heading: HeadingLevel.HEADING_2,
+          children: [
+            new TextRun({
+              text: 'Page Name',
+              font: DEFAULT_FONT,
+              size: HEADING_FONT_SIZE,
+              bold: true
+            })
+          ],
           spacing: { after: 200 }
         }),
         new Paragraph({
-          text: result.productTitle || `Product ${index + 1}`,
+          children: [
+            new TextRun({
+              text: result.productTitle || `Product ${index + 1}`,
+              font: DEFAULT_FONT,
+              size: DEFAULT_FONT_SIZE
+            })
+          ],
           spacing: { after: 400 }
         })
       );
@@ -34,14 +51,22 @@ export default async function handler(req, res) {
       // 2. Product URL
       productSections.push(
         new Paragraph({
-          text: 'Product URL',
-          heading: HeadingLevel.HEADING_2,
+          children: [
+            new TextRun({
+              text: 'Product URL',
+              font: DEFAULT_FONT,
+              size: HEADING_FONT_SIZE,
+              bold: true
+            })
+          ],
           spacing: { after: 200 }
         }),
         new Paragraph({
           children: [
             new TextRun({
-              text: result.productUrl || '',
+              text: result.url || '',
+              font: DEFAULT_FONT,
+              size: DEFAULT_FONT_SIZE,
               color: '0000FF',
               underline: {}
             })
@@ -54,12 +79,24 @@ export default async function handler(req, res) {
         // 3. Meta Description
         productSections.push(
           new Paragraph({
-            text: 'Meta Description',
-            heading: HeadingLevel.HEADING_2,
+            children: [
+              new TextRun({
+                text: 'Meta Description',
+                font: DEFAULT_FONT,
+                size: HEADING_FONT_SIZE,
+                bold: true
+              })
+            ],
             spacing: { after: 200 }
           }),
           new Paragraph({
-            text: result.metaDescription || '',
+            children: [
+              new TextRun({
+                text: result.metaDescription || '',
+                font: DEFAULT_FONT,
+                size: DEFAULT_FONT_SIZE
+              })
+            ],
             spacing: { after: 400 }
           })
         );
@@ -67,12 +104,24 @@ export default async function handler(req, res) {
         // 4. Meta Title
         productSections.push(
           new Paragraph({
-            text: 'Meta Title',
-            heading: HeadingLevel.HEADING_2,
+            children: [
+              new TextRun({
+                text: 'Meta Title',
+                font: DEFAULT_FONT,
+                size: HEADING_FONT_SIZE,
+                bold: true
+              })
+            ],
             spacing: { after: 200 }
           }),
           new Paragraph({
-            text: result.metaTitle || result.productTitle || '',
+            children: [
+              new TextRun({
+                text: result.metaTitle || result.productTitle || '',
+                font: DEFAULT_FONT,
+                size: DEFAULT_FONT_SIZE
+              })
+            ],
             spacing: { after: 400 }
           })
         );
@@ -80,12 +129,24 @@ export default async function handler(req, res) {
         // 5. Introduction
         productSections.push(
           new Paragraph({
-            text: 'Introduction',
-            heading: HeadingLevel.HEADING_2,
+            children: [
+              new TextRun({
+                text: 'Introduction',
+                font: DEFAULT_FONT,
+                size: HEADING_FONT_SIZE,
+                bold: true
+              })
+            ],
             spacing: { after: 200 }
           }),
           new Paragraph({
-            text: result.introduction || '',
+            children: [
+              new TextRun({
+                text: result.introduction || '',
+                font: DEFAULT_FONT,
+                size: DEFAULT_FONT_SIZE
+              })
+            ],
             spacing: { after: 400 }
           })
         );
@@ -94,8 +155,14 @@ export default async function handler(req, res) {
         if (result.featuresAndBenefits && Array.isArray(result.featuresAndBenefits)) {
           productSections.push(
             new Paragraph({
-              text: 'Features & Benefits',
-              heading: HeadingLevel.HEADING_2,
+              children: [
+                new TextRun({
+                  text: 'Features & Benefits',
+                  font: DEFAULT_FONT,
+                  size: HEADING_FONT_SIZE,
+                  bold: true
+                })
+              ],
               spacing: { after: 200 }
             })
           );
@@ -103,7 +170,13 @@ export default async function handler(req, res) {
           result.featuresAndBenefits.forEach(feature => {
             productSections.push(
               new Paragraph({
-                text: `• ${feature}`,
+                children: [
+                  new TextRun({
+                    text: `• ${feature}`,
+                    font: DEFAULT_FONT,
+                    size: DEFAULT_FONT_SIZE
+                  })
+                ],
                 spacing: { after: 100 },
                 indent: { left: 360 }
               })
@@ -115,8 +188,14 @@ export default async function handler(req, res) {
         if (result.technicalSpecs && Object.keys(result.technicalSpecs).length > 0) {
           productSections.push(
             new Paragraph({
-              text: 'Technical Specifications',
-              heading: HeadingLevel.HEADING_2,
+              children: [
+                new TextRun({
+                  text: 'Technical Specifications',
+                  font: DEFAULT_FONT,
+                  size: HEADING_FONT_SIZE,
+                  bold: true
+                })
+              ],
               spacing: { before: 400, after: 200 }
             })
           );
@@ -125,11 +204,19 @@ export default async function handler(req, res) {
             new TableRow({
               children: [
                 new TableCell({
-                  children: [new Paragraph({ text: key, bold: true })],
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({ text: key, font: DEFAULT_FONT, size: DEFAULT_FONT_SIZE, bold: true })
+                    ]
+                  })],
                   width: { size: 30, type: WidthType.PERCENTAGE }
                 }),
                 new TableCell({
-                  children: [new Paragraph({ text: String(value) })],
+                  children: [new Paragraph({
+                    children: [
+                      new TextRun({ text: String(value), font: DEFAULT_FONT, size: DEFAULT_FONT_SIZE })
+                    ]
+                  })],
                   width: { size: 70, type: WidthType.PERCENTAGE }
                 })
               ]
@@ -148,8 +235,14 @@ export default async function handler(req, res) {
         if (result.useCases && Array.isArray(result.useCases)) {
           productSections.push(
             new Paragraph({
-              text: 'Use Cases',
-              heading: HeadingLevel.HEADING_2,
+              children: [
+                new TextRun({
+                  text: 'Use Cases',
+                  font: DEFAULT_FONT,
+                  size: HEADING_FONT_SIZE,
+                  bold: true
+                })
+              ],
               spacing: { before: 400, after: 200 }
             })
           );
@@ -157,7 +250,13 @@ export default async function handler(req, res) {
           result.useCases.forEach(useCase => {
             productSections.push(
               new Paragraph({
-                text: `• ${useCase}`,
+                children: [
+                  new TextRun({
+                    text: `• ${useCase}`,
+                    font: DEFAULT_FONT,
+                    size: DEFAULT_FONT_SIZE
+                  })
+                ],
                 spacing: { after: 100 },
                 indent: { left: 360 }
               })
@@ -169,8 +268,14 @@ export default async function handler(req, res) {
         if (result.faqs && Array.isArray(result.faqs)) {
           productSections.push(
             new Paragraph({
-              text: 'Frequently Asked Questions',
-              heading: HeadingLevel.HEADING_2,
+              children: [
+                new TextRun({
+                  text: 'Frequently Asked Questions',
+                  font: DEFAULT_FONT,
+                  size: HEADING_FONT_SIZE,
+                  bold: true
+                })
+              ],
               spacing: { before: 400, after: 200 }
             })
           );
@@ -179,12 +284,23 @@ export default async function handler(req, res) {
             productSections.push(
               new Paragraph({
                 children: [
-                  new TextRun({ text: `Q: ${faq.question}`, bold: true })
+                  new TextRun({
+                    text: `Q: ${faq.question}`,
+                    font: DEFAULT_FONT,
+                    size: DEFAULT_FONT_SIZE,
+                    bold: true
+                  })
                 ],
                 spacing: { after: 100 }
               }),
               new Paragraph({
-                text: `A: ${faq.answer}`,
+                children: [
+                  new TextRun({
+                    text: `A: ${faq.answer}`,
+                    font: DEFAULT_FONT,
+                    size: DEFAULT_FONT_SIZE
+                  })
+                ],
                 spacing: { after: 200 },
                 indent: { left: 360 }
               })
@@ -196,12 +312,24 @@ export default async function handler(req, res) {
         if (result.callToActions) {
           productSections.push(
             new Paragraph({
-              text: 'Call to Action',
-              heading: HeadingLevel.HEADING_2,
+              children: [
+                new TextRun({
+                  text: 'Call to Action',
+                  font: DEFAULT_FONT,
+                  size: HEADING_FONT_SIZE,
+                  bold: true
+                })
+              ],
               spacing: { before: 400, after: 200 }
             }),
             new Paragraph({
-              text: result.callToActions,
+              children: [
+                new TextRun({
+                  text: result.callToActions,
+                  font: DEFAULT_FONT,
+                  size: DEFAULT_FONT_SIZE
+                })
+              ],
               spacing: { after: 400 }
             })
           );
@@ -211,14 +339,25 @@ export default async function handler(req, res) {
         if (result.structuredData) {
           productSections.push(
             new Paragraph({
-              text: 'Structured Data (Schema.org JSON-LD)',
-              heading: HeadingLevel.HEADING_2,
+              children: [
+                new TextRun({
+                  text: 'Structured Data (Schema.org JSON-LD)',
+                  font: DEFAULT_FONT,
+                  size: HEADING_FONT_SIZE,
+                  bold: true
+                })
+              ],
               spacing: { before: 400, after: 200 }
             }),
             new Paragraph({
-              text: JSON.stringify(result.structuredData, null, 2),
-              spacing: { after: 400 },
-              style: 'Code'
+              children: [
+                new TextRun({
+                  text: JSON.stringify(result.structuredData, null, 2),
+                  font: 'Consolas',
+                  size: 20 // 10pt for code
+                })
+              ],
+              spacing: { after: 400 }
             })
           );
         }
@@ -227,8 +366,14 @@ export default async function handler(req, res) {
         // Error message for failed products
         productSections.push(
           new Paragraph({
-            text: `Error: ${result.error || 'Failed to generate content'}`,
-            color: 'FF0000',
+            children: [
+              new TextRun({
+                text: `Error: ${result.error || 'Failed to generate content'}`,
+                font: DEFAULT_FONT,
+                size: DEFAULT_FONT_SIZE,
+                color: 'FF0000'
+              })
+            ],
             spacing: { after: 400 }
           })
         );
