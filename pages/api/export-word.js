@@ -18,41 +18,45 @@ export default async function handler(req, res) {
     results.forEach((result, index) => {
       const productSections = [];
 
-      // Title
+      // 1. Page Name (Title)
       productSections.push(
         new Paragraph({
+          text: 'Page Name',
+          heading: HeadingLevel.HEADING_2,
+          spacing: { after: 200 }
+        }),
+        new Paragraph({
           text: result.productTitle || `Product ${index + 1}`,
-          heading: HeadingLevel.HEADING_1,
-          alignment: AlignmentType.CENTER,
           spacing: { after: 400 }
         })
       );
 
-      // URL
+      // 2. Product URL
       productSections.push(
+        new Paragraph({
+          text: 'Product URL',
+          heading: HeadingLevel.HEADING_2,
+          spacing: { after: 200 }
+        }),
         new Paragraph({
           children: [
             new TextRun({
-              text: 'Product URL: ',
-              bold: true
-            }),
-            new TextRun({
-              text: result.url,
+              text: result.productUrl || '',
               color: '0000FF',
               underline: {}
             })
           ],
-          spacing: { after: 200 }
+          spacing: { after: 400 }
         })
       );
 
       if (result.success) {
-        // Meta Description
+        // 3. Meta Description
         productSections.push(
           new Paragraph({
             text: 'Meta Description',
             heading: HeadingLevel.HEADING_2,
-            spacing: { before: 400, after: 200 }
+            spacing: { after: 200 }
           }),
           new Paragraph({
             text: result.metaDescription || '',
@@ -60,12 +64,25 @@ export default async function handler(req, res) {
           })
         );
 
-        // Introduction
+        // 4. Meta Title
+        productSections.push(
+          new Paragraph({
+            text: 'Meta Title',
+            heading: HeadingLevel.HEADING_2,
+            spacing: { after: 200 }
+          }),
+          new Paragraph({
+            text: result.metaTitle || result.productTitle || '',
+            spacing: { after: 400 }
+          })
+        );
+
+        // 5. Introduction
         productSections.push(
           new Paragraph({
             text: 'Introduction',
             heading: HeadingLevel.HEADING_2,
-            spacing: { before: 400, after: 200 }
+            spacing: { after: 200 }
           }),
           new Paragraph({
             text: result.introduction || '',
@@ -73,13 +90,13 @@ export default async function handler(req, res) {
           })
         );
 
-        // Features and Benefits
+        // 6. Features and Benefits
         if (result.featuresAndBenefits && Array.isArray(result.featuresAndBenefits)) {
           productSections.push(
             new Paragraph({
               text: 'Features & Benefits',
               heading: HeadingLevel.HEADING_2,
-              spacing: { before: 400, after: 200 }
+              spacing: { after: 200 }
             })
           );
 
@@ -94,7 +111,7 @@ export default async function handler(req, res) {
           });
         }
 
-        // Technical Specifications
+        // 7. Technical Specifications
         if (result.technicalSpecs && Object.keys(result.technicalSpecs).length > 0) {
           productSections.push(
             new Paragraph({
@@ -127,7 +144,7 @@ export default async function handler(req, res) {
           );
         }
 
-        // Use Cases
+        // 8. Use Cases
         if (result.useCases && Array.isArray(result.useCases)) {
           productSections.push(
             new Paragraph({
@@ -148,78 +165,7 @@ export default async function handler(req, res) {
           });
         }
 
-        // SEO Keywords
-        if (result.seoKeywords) {
-          productSections.push(
-            new Paragraph({
-              text: 'SEO Keywords',
-              heading: HeadingLevel.HEADING_2,
-              spacing: { before: 400, after: 200 }
-            })
-          );
-
-          if (result.seoKeywords.primaryKeywords) {
-            productSections.push(
-              new Paragraph({
-                children: [
-                  new TextRun({ text: 'Primary Keywords: ', bold: true }),
-                  new TextRun({ text: result.seoKeywords.primaryKeywords.join(', ') })
-                ],
-                spacing: { after: 100 }
-              })
-            );
-          }
-
-          if (result.seoKeywords.commercialIntent) {
-            productSections.push(
-              new Paragraph({
-                children: [
-                  new TextRun({ text: 'Commercial Intent Keywords: ', bold: true }),
-                  new TextRun({ text: result.seoKeywords.commercialIntent.join(', ') })
-                ],
-                spacing: { after: 100 }
-              })
-            );
-          }
-
-          if (result.seoKeywords.longTail) {
-            productSections.push(
-              new Paragraph({
-                children: [
-                  new TextRun({ text: 'Long-tail Keywords: ', bold: true }),
-                  new TextRun({ text: result.seoKeywords.longTail.join(', ') })
-                ],
-                spacing: { after: 100 }
-              })
-            );
-          }
-
-          if (result.seoKeywords.semantic) {
-            productSections.push(
-              new Paragraph({
-                children: [
-                  new TextRun({ text: 'Semantic Keywords: ', bold: true }),
-                  new TextRun({ text: result.seoKeywords.semantic.join(', ') })
-                ],
-                spacing: { after: 100 }
-              })
-            );
-          }
-
-          if (result.seoKeywords.localUK) {
-            productSections.push(
-              new Paragraph({
-                children: [
-                  new TextRun({ text: 'Local/UK Keywords: ', bold: true }),
-                  new TextRun({ text: result.seoKeywords.localUK.join(', ') })
-                ],
-                spacing: { after: 400 }
-              })
-            );
-          }
-        }
-
-        // FAQs
+        // 9. FAQs
         if (result.faqs && Array.isArray(result.faqs)) {
           productSections.push(
             new Paragraph({
@@ -246,7 +192,7 @@ export default async function handler(req, res) {
           });
         }
 
-        // Call to Actions
+        // 10. Call to Action
         if (result.callToActions) {
           productSections.push(
             new Paragraph({
@@ -261,7 +207,7 @@ export default async function handler(req, res) {
           );
         }
 
-        // Structured Data (Schema.org)
+        // 11. Structured Data (Schema.org)
         if (result.structuredData) {
           productSections.push(
             new Paragraph({

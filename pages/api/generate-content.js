@@ -1250,15 +1250,20 @@ ${excelProductInfo}
 
     // Fallback for any failed generations
     content.productTitle = content.productTitle || scrapedData.title || 'Premium Product - High Quality & Best Value';
-    content.metaDescription = content.metaDescription || `Discover ${scrapedData.title || 'our premium product'}. ${scrapedData.description?.substring(0, 100) || 'Best quality and value'}. Shop now!`;
-    content.introduction = content.introduction || scrapedData.description || 'This exceptional product delivers outstanding value and quality, designed to meet your needs and exceed expectations.';
-    content.featuresAndBenefits = content.featuresAndBenefits || scrapedData.features || [
-      'Premium quality construction',
-      'Exceptional value for money',
-      'Trusted by thousands of customers',
-      'Industry-leading performance',
-      'Comprehensive warranty included'
-    ];
+    content.metaDescription = content.metaDescription || `Source premium ${scrapedData.title || 'food ingredients'} from Gerald McDonald, the UK's trusted BRC-certified supplier. Quality assured for food manufacturing. Request specs today.`;
+    content.introduction = content.introduction || `${scrapedData.title || 'This premium food ingredient'} is a versatile ingredient essential for manufacturers producing high-quality food products. As the UK's leading BRC-certified supplier since 1952, Gerald McDonald provides this product with consistent quality, perfect for industrial food production. Our carefully sourced and processed ingredients maintain their quality profile while meeting strict food safety standards, making them ideal for a wide range of food manufacturing applications.`;
+    // Ensure features and benefits is exactly 7 as per spec
+    if (!content.featuresAndBenefits || !Array.isArray(content.featuresAndBenefits) || content.featuresAndBenefits.length < 7) {
+      content.featuresAndBenefits = [
+        'Custom blending capabilities with no minimum order quantities enable precise recipe development while reducing inventory costs and waste.',
+        'BRC-certified facility with automated CIP/SIP systems ensures consistent product quality and compliance with international food safety standards.',
+        'Strategic UK port location and flexible delivery schedules guarantee reliable supply chain management and faster time-to-market.',
+        'In-house R&D support and trial blending services accelerate product development cycles while minimizing formulation risks.',
+        'Multiple certifications (Kosher, Halal, Organic) open access to specialty markets and enhance product marketability.',
+        'Computer-controlled blending facility (1,000L to 26,000L capacity) delivers precise consistency across both small and large production runs.',
+        'Century of sourcing expertise ensures premium ingredient quality and stable supply through established global networks.'
+      ];
+    }
     // Ensure technical specs is always an object with comprehensive fallback
     if (!content.technicalSpecs || typeof content.technicalSpecs === 'string') {
       // Try to extract any specifications from scraped data first
@@ -1292,16 +1297,52 @@ ${excelProductInfo}
       content.technicalSpecs = { ...defaultSpecs, ...fallbackSpecs };
     }
 
-    // Ensure use cases is always an array with comprehensive fallback
-    if (!content.useCases || !Array.isArray(content.useCases)) {
+    // Ensure use cases is always an array with comprehensive fallback (exactly 8 as per spec)
+    if (!content.useCases || !Array.isArray(content.useCases) || content.useCases.length < 8) {
       content.useCases = [
-        'Beverage manufacturers - Fortify juice drinks and smoothies with natural vitamin content for premium health-focused product lines',
-        'Bakery producers - Enhance nutritional profiles of breakfast bars and cereals meeting clean label requirements for retail chains',
-        'Dairy processors - Develop functional yogurts and probiotic drinks targeting specific health benefits with stable ingredient integration',
-        'Confectionery manufacturers - Create vitamin-enriched gummies and functional sweets for growing wellness confectionery market',
-        'Nutraceutical formulators - Produce dietary supplements and functional foods meeting pharmaceutical-grade quality standards',
-        'Private label manufacturers - Develop own-brand health products for major UK supermarket chains requiring consistent quality',
-        'Contract manufacturers - Meet diverse client specifications with versatile ingredient suitable for multiple applications'
+        'Perfect for premium British craft beverage makers seeking consistent base ingredients - provides reliable quality and authentic flavour profiles while maintaining year-round production standards.',
+        'Ideal for high-end baby food manufacturers requiring clean-label ingredients - offers natural characteristics and smooth texture without added preservatives.',
+        'Premium yogurt producers can incorporate at optimal concentrations into their products, achieving authentic taste and texture while maintaining clean label requirements for UK retail chains.',
+        'Artisanal ice cream producers can incorporate the ingredient to create distinctive flavour profiles while maintaining clean label requirements for natural ingredients.',
+        'Bakery manufacturers benefit from consistent quality for pastries and baked goods, ensuring uniform product quality across large-scale production runs.',
+        'Confectionery producers can utilise the ingredient in gummies and sweets, achieving desired flavour profiles while meeting UK food safety standards.',
+        'Ready meal manufacturers appreciate the convenience and consistency for sauce bases and flavour enhancement in premium prepared food ranges.',
+        'Health and wellness brands can incorporate into protein shakes and functional beverages, adding natural appeal to sports nutrition products.'
+      ];
+    }
+
+    // Ensure FAQs is always an array with exactly 7 Q&As as per spec
+    if (!content.faqs || !Array.isArray(content.faqs) || content.faqs.length < 7) {
+      const productName = content.productTitle?.split('|')[0]?.trim() || scrapedData.title || 'this ingredient';
+      content.faqs = [
+        {
+          question: `What certifications does Gerald McDonald's ${productName} meet for food manufacturing?`,
+          answer: `Gerald McDonald's products meet BRC AA Grade certification standards and are available with Kosher, Halal, and Organic certifications upon request. All products comply with UK and EU food safety regulations and are manufactured in our BRC-certified Basildon facility.`
+        },
+        {
+          question: 'How does Gerald McDonald ensure consistent quality across batches?',
+          answer: 'Gerald McDonald maintains rigorous quality control through our BRC AA Grade certified facility in Basildon. We use computer-controlled blending systems, in-house laboratory testing, and comprehensive traceability from source to delivery, ensuring batch-to-batch consistency.'
+        },
+        {
+          question: 'What is the minimum order quantity for custom ingredient blends?',
+          answer: 'Gerald McDonald offers flexible ordering with no minimum quantity requirements for custom blends. Our facility can accommodate blending volumes from 1,000L to 26,000L, making us suitable for both small-batch specialty orders and large-scale production runs.'
+        },
+        {
+          question: 'What is the typical lead time for custom blend development?',
+          answer: 'Standard custom blend development typically takes 2-4 weeks from initial consultation to delivery. Our R&D team works closely with you throughout the process. Rush orders can be accommodated subject to capacity and ingredient availability.'
+        },
+        {
+          question: 'Are samples available for product development and testing?',
+          answer: 'Yes, Gerald McDonald provides samples for qualified food manufacturers. Contact our technical team to discuss your requirements and arrange sample delivery. Samples are typically dispatched within 48 hours of approval.'
+        },
+        {
+          question: 'What are the storage requirements after delivery?',
+          answer: 'Storage requirements vary by product type but generally require cool, dry conditions below 25°C away from direct sunlight. Specific storage instructions are provided with each delivery. Opened containers should be resealed and used within the recommended timeframe.'
+        },
+        {
+          question: 'What technical support does Gerald McDonald provide for formulation?',
+          answer: 'Gerald McDonald offers comprehensive technical support including formulation guidance, application testing, and ongoing consultation. Our experienced food technologists can advise on usage rates, compatibility, and optimisation for your specific applications. Contact us at +44 (0)1268 244900.'
+        }
       ];
     }
 
@@ -1393,7 +1434,7 @@ ${excelProductInfo}
     }
 
     // Ensure call to actions is always a string
-    content.callToActions = content.callToActions || 'Request your free sample today for formulation testing. Our food technologists provide expert guidance to optimize your applications, backed by 70 years of ingredient expertise. Call 0800-XXX-XXXX or complete our online enquiry form – samples ship within 24 hours.';
+    content.callToActions = content.callToActions || 'Request Your Sample & Technical Support Today | Backed by 70+ years of ingredient expertise, our technical team is ready to support your next product innovation. Contact our specialists at +44 (0)1268 244900 or email ingredients@geraldmcdonald.com for immediate sampling and specification assistance.';
 
     return res.status(200).json(content);
 
@@ -1422,59 +1463,112 @@ function generateFallbackStructuredData(scrapedData, url) {
 }
 
 function generateFallbackContent(scrapedData, aiText = '') {
+  const productName = scrapedData.title || 'Premium Food Ingredient';
   return {
-    productTitle: scrapedData.title || 'Premium Product - High Quality & Best Value',
-    metaDescription: `Discover ${scrapedData.title || 'our premium product'}. ${scrapedData.description?.substring(0, 100) || 'Best quality and value'}. Shop now!`,
-    introduction: scrapedData.description || 'This exceptional product delivers outstanding value and quality, designed to meet your needs and exceed expectations.',
-    featuresAndBenefits: scrapedData.features || [
-      'Premium quality construction',
-      'Exceptional value for money',
-      'Trusted by thousands of customers',
-      'Industry-leading performance',
-      'Comprehensive warranty included'
+    productTitle: `${productName} | Food-Grade Quality | BRC Certified`,
+    metaDescription: `Source premium ${productName} from Gerald McDonald, the UK's trusted BRC-certified supplier. Quality assured for food manufacturing. Request specs today.`,
+    introduction: `${productName} is a versatile ingredient essential for manufacturers producing high-quality food products. As the UK's leading BRC-certified supplier since 1952, Gerald McDonald provides this product with consistent quality, perfect for industrial food production. Our carefully sourced and processed ingredients maintain their quality profile while meeting strict food safety standards, making them ideal for a wide range of food manufacturing applications.`,
+    featuresAndBenefits: [
+      'Custom blending capabilities with no minimum order quantities enable precise recipe development while reducing inventory costs and waste.',
+      'BRC-certified facility with automated CIP/SIP systems ensures consistent product quality and compliance with international food safety standards.',
+      'Strategic UK port location and flexible delivery schedules guarantee reliable supply chain management and faster time-to-market.',
+      'In-house R&D support and trial blending services accelerate product development cycles while minimizing formulation risks.',
+      'Multiple certifications (Kosher, Halal, Organic) open access to specialty markets and enhance product marketability.',
+      'Computer-controlled blending facility (1,000L to 26,000L capacity) delivers precise consistency across both small and large production runs.',
+      'Century of sourcing expertise ensures premium ingredient quality and stable supply through established global networks.'
     ],
-    technicalSpecs: scrapedData.specifications || {
-      'Quality': 'Premium',
-      'Warranty': 'Included',
-      'Support': '24/7 Available'
+    technicalSpecs: {
+      'Product Name': productName,
+      'Product Type': 'Food Ingredient',
+      'Appearance': 'As per specification',
+      'Colour': 'Characteristic',
+      'Packaging': 'Aseptic bags in drums or IBC containers',
+      'Storage Conditions': 'Store in cool, dry conditions below 25°C',
+      'Shelf Life': '12-24 months when unopened and properly stored',
+      'Allergens': 'None (produced in facility handling various allergens)',
+      'GMO Status': 'Non-GMO',
+      'Country of Origin': 'Various approved sources',
+      'Certifications': 'BRC AA Grade, FSSC 22000, HACCP, ISO 22000',
+      'Microbiological Standard': 'Total Plate Count <1000 cfu/g',
+      'Suitable For': 'Vegetarian, Vegan, Kosher, Halal (on request)'
     },
     useCases: [
-      'Perfect for everyday use',
-      'Ideal for professional applications',
-      'Great for both beginners and experts'
+      'Perfect for premium British craft beverage makers seeking consistent base ingredients - provides reliable quality and authentic flavour profiles while maintaining year-round production standards.',
+      'Ideal for high-end baby food manufacturers requiring clean-label ingredients - offers natural characteristics and smooth texture without added preservatives.',
+      'Premium yogurt producers can incorporate at optimal concentrations into their products, achieving authentic taste and texture while maintaining clean label requirements for UK retail chains.',
+      'Artisanal ice cream producers can incorporate the ingredient to create distinctive flavour profiles while maintaining clean label requirements for natural ingredients.',
+      'Bakery manufacturers benefit from consistent quality for pastries and baked goods, ensuring uniform product quality across large-scale production runs.',
+      'Confectionery producers can utilise the ingredient in gummies and sweets, achieving desired flavour profiles while meeting UK food safety standards.',
+      'Ready meal manufacturers appreciate the convenience and consistency for sauce bases and flavour enhancement in premium prepared food ranges.',
+      'Health and wellness brands can incorporate into protein shakes and functional beverages, adding natural appeal to sports nutrition products.'
     ],
     seoKeywords: {
-      primaryKeywords: [scrapedData.title?.split(' ')[0] || 'product', 'buy', 'online', 'best', 'premium'],
-      secondaryKeywords: ['quality', 'value', 'professional', 'trusted', 'reliable'],
-      longTailKeywords: [`best ${scrapedData.title || 'product'} online`, `buy ${scrapedData.title || 'product'} with warranty`]
+      primaryKeywords: [productName.toLowerCase(), `${productName.toLowerCase()} supplier`, 'food ingredient UK'],
+      commercialIntent: [`buy ${productName.toLowerCase()}`, `${productName.toLowerCase()} wholesale`, `bulk ${productName.toLowerCase()} supplier`],
+      longTail: [`${productName.toLowerCase()} for food manufacturing`, `BRC certified ${productName.toLowerCase()}`, `UK ${productName.toLowerCase()} supplier`],
+      semantic: ['food grade ingredient', 'industrial food supply', 'food manufacturing ingredient'],
+      industrySpecific: ['BRC certified supplier', 'FSSC 22000', 'food ingredient manufacturer UK']
     },
     structuredData: {
       "@context": "https://schema.org",
-      "@type": "Product",
-      "name": scrapedData.title || 'Product',
-      "description": scrapedData.description || '',
-      "image": scrapedData.images?.[0] || '',
-      "offers": {
-        "@type": "Offer",
-        "price": scrapedData.price || '',
-        "priceCurrency": "USD",
-        "availability": "https://schema.org/InStock"
-      }
+      "@graph": [
+        {
+          "@type": "Product",
+          "name": scrapedData.title || 'Premium Food Ingredient',
+          "description": scrapedData.description || '',
+          "image": [],
+          "brand": {
+            "@type": "Brand",
+            "name": "Gerald McDonald Ltd"
+          },
+          "manufacturer": {
+            "@type": "Organization",
+            "name": "Gerald McDonald Ltd",
+            "foundingDate": "1952"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "Contact for pricing",
+            "priceCurrency": "GBP",
+            "availability": "https://schema.org/InStock",
+            "seller": {
+              "@type": "Organization",
+              "name": "Gerald McDonald Ltd"
+            }
+          }
+        }
+      ]
     },
     faqs: [
       {
-        question: 'Is this product in stock?',
-        answer: 'Yes, this product is currently available and ready to ship.'
+        question: "What certifications does Gerald McDonald's products meet for food manufacturing?",
+        answer: "Gerald McDonald's products meet BRC AA Grade certification standards and are available with Kosher, Halal, and Organic certifications upon request. All products comply with UK and EU food safety regulations and are manufactured in our BRC-certified Basildon facility."
       },
       {
-        question: 'What warranty is included?',
-        answer: 'This product comes with our comprehensive warranty for your peace of mind.'
+        question: 'How does Gerald McDonald ensure consistent quality across batches?',
+        answer: 'Gerald McDonald maintains rigorous quality control through our BRC AA Grade certified facility in Basildon. We use computer-controlled blending systems, in-house laboratory testing, and comprehensive traceability from source to delivery, ensuring batch-to-batch consistency.'
       },
       {
-        question: 'How quickly will it ship?',
-        answer: 'Orders typically ship within 1-2 business days.'
+        question: 'What is the minimum order quantity for custom ingredient blends?',
+        answer: "Gerald McDonald offers flexible ordering with no minimum quantity requirements for custom blends. Our facility can accommodate blending volumes from 1,000L to 26,000L, making us suitable for both small-batch specialty orders and large-scale production runs."
+      },
+      {
+        question: 'What is the typical lead time for custom blend development?',
+        answer: 'Standard custom blend development typically takes 2-4 weeks from initial consultation to delivery. Our R&D team works closely with you throughout the process. Rush orders can be accommodated subject to capacity and ingredient availability.'
+      },
+      {
+        question: 'Are samples available for product development and testing?',
+        answer: 'Yes, Gerald McDonald provides samples for qualified food manufacturers. Contact our technical team to discuss your requirements and arrange sample delivery. Samples are typically dispatched within 48 hours of approval.'
+      },
+      {
+        question: 'What are the storage requirements after delivery?',
+        answer: "Storage requirements vary by product type but generally require cool, dry conditions below 25°C away from direct sunlight. Specific storage instructions are provided with each delivery. Opened containers should be resealed and used within the recommended timeframe."
+      },
+      {
+        question: 'What technical support does Gerald McDonald provide for formulation?',
+        answer: 'Gerald McDonald offers comprehensive technical support including formulation guidance, application testing, and ongoing consultation. Our experienced food technologists can advise on usage rates, compatibility, and optimisation for your specific applications. Contact us at +44 (0)1268 244900.'
       }
     ],
-    callToActions: 'Request your free sample today for formulation testing. Our food technologists provide expert guidance to optimize your applications. Call 0800-XXX-XXXX or complete our online enquiry form.'
+    callToActions: 'Request Your Sample & Technical Support Today | Backed by 70+ years of ingredient expertise, our technical team is ready to support your next product innovation. Contact our specialists at +44 (0)1268 244900 or email ingredients@geraldmcdonald.com for immediate sampling and specification assistance.'
   };
 }

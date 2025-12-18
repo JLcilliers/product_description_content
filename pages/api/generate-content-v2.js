@@ -59,266 +59,6 @@ SEO STRATEGIC INSIGHTS
 
 Be specific and extract actual information from the provided data. Do not make generic assumptions.`;
 
-// Default prompts (will be replaced by industry-specific prompts from selector)
-const DEFAULT_PROMPTS = {
-  productTitle: {
-    system: "You are an expert e-commerce SEO specialist for Gerald McDonald Ltd, a UK-based premium food ingredients supplier since 1952. Generate SEO-optimized product titles that maximize visibility in search engines and AI-powered search systems. Focus on accuracy, relevance, and keyword optimization.",
-    user: `Based on the business research and scraped data, generate an SEO-optimized product title.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**Product Data**:
-- Current Title: {TITLE}
-- Description: {DESCRIPTION}
-- Specifications: {SPECIFICATIONS}
-- Features: {FEATURES}
-
-**SEO Requirements**:
-1. Length: 60-80 characters for optimal SERP display
-2. Include primary product keyword at the start
-3. Add descriptive qualifiers (Premium, Industrial, Professional-Grade, etc.)
-4. Include key specifications or certifications if available (BRC Certified, Food-Grade, etc.)
-5. Use natural language that industry professionals actually search for
-6. Structure: [Descriptor] [Product Type] | [Key Attribute] | [Certification/Quality]
-
-**Example Format**: "Premium Apple Medium Acid Puree | Food-Grade Industrial Ingredient | BRC Certified"
-
-Generate ONLY the product title. No explanations.`
-  },
-
-  metaDescription: {
-    system: "You are an expert SEO copywriter for Gerald McDonald Ltd. Create compelling meta descriptions that maximize click-through rates from search results while accurately representing the product.",
-    user: `Based on the business research and product title, generate an optimized meta description.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**Product Title**: {PRODUCT_TITLE}
-**Product Data**:
-- Description: {DESCRIPTION}
-- Features: {FEATURES}
-- USPs: {USPS}
-
-**Requirements**:
-1. Length: 150-160 characters (will be truncated if longer)
-2. Include primary keyword naturally
-3. Include action verb (Shop, Discover, Source, Order)
-4. Mention Gerald McDonald as trusted supplier
-5. Include specific benefit or quality indicator
-6. End with soft call-to-action
-
-Generate ONLY the meta description. No explanations.`
-  },
-
-  introduction: {
-    system: "You are a content strategist for Gerald McDonald Ltd. Write compelling introductory paragraphs that establish expertise, build trust, and are optimized for featured snippets in search results.",
-    user: `Based on the business research, generate an SEO-optimized introduction paragraph.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**Product Context**:
-- Title: {PRODUCT_TITLE}
-- Meta Description: {META_DESCRIPTION}
-- Key Features: {FEATURES}
-
-**Requirements**:
-1. Length: 80-120 words (more comprehensive)
-2. First sentence: Define what the product is and its primary use
-3. Second sentence: Mention Gerald McDonald as the UK's leading/trusted BRC-certified supplier since 1952
-4. Third sentence: Highlight key quality attributes and certifications
-5. Fourth sentence: Mention ideal applications or target industries
-6. Use specific, concrete language - avoid generic descriptions
-7. Include relevant industry terminology
-
-**Example opening**: "[Product] is a versatile food ingredient essential for manufacturers producing [applications]. As the UK's leading BRC-certified supplier since 1952, Gerald McDonald provides this high-quality [product] with consistent [attributes], perfect for industrial food production..."
-
-Generate ONLY the paragraph. No explanations.`
-  },
-
-  featuresAndBenefits: {
-    system: "You are a product copywriter for Gerald McDonald Ltd. Create feature-benefit pairs that drive purchasing decisions for food manufacturers and food service professionals.",
-    user: `Based on the scraped features and business research, generate optimized feature-benefit bullets.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**Scraped Features**:
-{FEATURES}
-
-**Specifications**:
-{SPECIFICATIONS}
-
-**Requirements**:
-1. Generate exactly 6 bullet points
-2. Each bullet: 20-30 words
-3. Format: Start with capability/feature, then "enables/ensures/guarantees" + specific business benefit with measurable outcome
-4. Use bullet character: •
-5. Include these themes:
-   - Custom capabilities (flexibility, no minimums)
-   - Certifications and compliance (BRC, food safety standards)
-   - Supply chain advantages (UK location, delivery, reliability)
-   - Technical support (R&D, trial services, formulation help)
-   - Market access (certifications for specialty markets)
-   - Quality consistency (automated systems, batch control)
-6. Use power verbs: enables, ensures, guarantees, delivers, accelerates, reduces
-7. Include specific outcomes: "reducing inventory costs", "faster time-to-market", "enhanced product marketability"
-
-**Example**: "• Custom blending capabilities with no minimum order quantities enable precise recipe development while reducing inventory costs and waste."
-
-Generate ONLY bullet points. No headers or explanations.`
-  },
-
-  technicalSpecs: {
-    system: "You are a technical documentation specialist for Gerald McDonald Ltd. Extract and organize precise technical specifications for food industry professionals.",
-    user: `Based on the scraped specifications and product data, generate a comprehensive specifications table.
-
-**Scraped Specifications**:
-{SPECIFICATIONS}
-
-**Product Data**:
-- Title: {TITLE}
-- Features: {FEATURES}
-- Additional Info: {ADDITIONAL_CONTENT}
-
-**Requirements**:
-1. Generate 10-15 specification rows
-2. Format: Specification | Details
-3. Include all scraped specs plus standard food industry specs
-4. Use precise units (metric for UK market)
-5. Include certifications, packaging, shelf life, storage
-6. Group related specs logically
-
-Generate ONLY the table in format:
-Specification | Details
-[spec] | [value]`
-  },
-
-  useCases: {
-    system: "You are a food industry applications expert for Gerald McDonald Ltd. Generate practical use cases that help buyers visualize ingredient applications.",
-    user: `Based on the business research and product specifications, generate compelling use cases.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**Product Type**: {PRODUCT_TITLE}
-**Specifications**: {SPECIFICATIONS}
-**Target Market**: {TARGET_MARKET}
-
-**Requirements**:
-1. Generate exactly 8 use cases
-2. Each: 30-40 words
-3. Format: "• Perfect/Ideal/Essential/Excellent for [specific customer type] [seeking/requiring specific need] - [provides/delivers/offers specific benefit with technical detail]."
-4. Include diverse customer types:
-   - Craft/artisanal manufacturers
-   - Premium/luxury brands
-   - Health-focused/clean-label producers
-   - Industrial/large-scale manufacturers
-   - Specialist/niche applications
-5. Include specific technical benefits (viscosity, stability, fermentation, moisture retention, etc.)
-6. Reference real UK market segments (British craft, premium ready-meals, etc.)
-7. Use descriptive adjectives: premium, luxury, artisanal, gourmet, health-focused
-
-**Example**: "• Perfect for premium British craft cider makers seeking a consistent base - provides reliable fermentation characteristics and authentic apple flavor while maintaining year-round production standards."
-
-Generate ONLY bullet points. No headers.`
-  },
-
-  seoKeywords: {
-    system: "You are an SEO strategist for Gerald McDonald Ltd. Develop comprehensive keyword strategies based on actual product data and search intent.",
-    user: `Based on the business research and SEO data, generate a keyword strategy.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**SEO Data**:
-{SEO_DATA}
-
-**Product**: {PRODUCT_TITLE}
-
-Generate keywords in this exact format:
-
-PRIMARY KEYWORDS (High Competition/Volume)
-[keyword] | High
-[keyword] | High
-
-COMMERCIAL INTENT KEYWORDS
-[keyword phrase] | Medium
-[keyword phrase] | Low
-
-LONG-TAIL KEYWORDS (Low Competition)
-[specific phrase] | Low
-
-SEMANTIC/LSI KEYWORDS
-[related term] | Medium
-
-INDUSTRY-SPECIFIC KEYWORDS
-[food industry term] | Low
-
-Include 20-25 total keywords. Use UK spelling.`
-  },
-
-  faqs: {
-    system: "You are a customer service expert for Gerald McDonald Ltd. Create FAQs that answer real customer questions while optimizing for People Also Ask features.",
-    user: `Based on the business research and product data, generate comprehensive FAQs.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**Product**: {PRODUCT_TITLE}
-**Specifications**: {SPECIFICATIONS}
-
-**Requirements**:
-1. Generate exactly 7 Q&A pairs
-2. Question: 10-18 words (natural search queries starting with What/How/Can/Do/Does)
-3. Answer: 50-70 words (detailed, featured snippet optimal)
-4. Format: Q: [question]\\nA: [answer]
-5. Cover these topics in order:
-   - Certifications and compliance
-   - Quality assurance processes
-   - Minimum order quantities and flexibility
-   - Lead time and development process
-   - Sampling availability
-   - Storage and handling requirements
-   - Technical support and applications assistance
-6. Include specific details: mention BRC, Gerald McDonald's Basildon facility, UK/EU regulations
-7. Use conversational but professional tone
-8. Include company contact methods in relevant answers
-
-**Example**:
-Q: What certifications does Gerald McDonald's [product] meet for food manufacturing?
-A: Gerald McDonald's [product] meets BRC certification standards and is available with Kosher, Halal, and Organic certifications upon request. All products comply with UK and EU food safety regulations and are manufactured in our BRC-certified Basildon facility.
-
-Generate ONLY Q&A pairs. One blank line between pairs.`
-  },
-
-  callToActions: {
-    system: "You are a conversion specialist for Gerald McDonald Ltd. Create CTAs that drive immediate response from B2B food industry buyers.",
-    user: `Based on the business research and product benefits, generate a high-converting CTA.
-
-**Business Research**:
-{BUSINESS_RESEARCH}
-
-**Product**: {PRODUCT_TITLE}
-**Key Benefits**: {FEATURES}
-
-**Requirements**:
-1. Length: 50-65 words
-2. Structure: [Action headline] | [Value proposition with expertise] [Contact methods with specific details]
-3. Start with "Request Your [Product Type] Sample Today" or similar action-oriented headline
-4. Mention "Backed by 70+ years of ingredient expertise" or similar credibility statement
-5. Include "technical team" or "specialists" ready to support
-6. Provide specific contact: phone number format "+44 (0)1268 244900" and email "ingredients@geraldmcdonald.com"
-7. Mention "immediate sampling" or "specification assistance"
-8. Use power words: backed, comprehensive, immediate, specialist
-
-**Example**: "Request Your Custom [Product] Sample Today | Backed by 70+ years of ingredient expertise, our technical team is ready to support your next product innovation. Contact our specialists at +44 (0)1268 244900 or email ingredients@geraldmcdonald.com for immediate sampling and specification assistance."
-
-Generate ONLY the CTA text. No additional formatting or headers.`
-  }
-};
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -343,7 +83,7 @@ ${category ? `- Category: ${category}` : ''}
 
 Use this information to provide more accurate and targeted product descriptions.` : '';
 
-    // Step 1: Conduct Business Research using Claude Opus
+    // Step 1: Conduct Business Research using Claude Sonnet
     const businessResearchPrompt = BUSINESS_RESEARCH_PROMPT
       .replace('{URL}', url)
       .replace('{DOMAIN}', scrapedData.domain || new URL(url).hostname)
@@ -361,7 +101,7 @@ Use this information to provide more accurate and targeted product descriptions.
     let businessResearch = '';
     try {
       const researchResponse = await anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20241022', // Using latest Sonnet for research
+        model: 'claude-3-5-sonnet-20241022',
         max_tokens: 2000,
         temperature: 0.3,
         system: "You are a senior business analyst conducting thorough research for SEO content generation.",
@@ -405,11 +145,13 @@ Business Model: B2B Supplier`;
         .replace('{DESCRIPTION}', scrapedData.description || '')
         .replace('{PRODUCT_TITLE}', content.productTitle || scrapedData.providedProductName || scrapedData.title || productName || '')
         .replace('{META_DESCRIPTION}', content.metaDescription || '')
+        .replace('{PRODUCT_URL}', content.productUrl || url)
         .replace('{FEATURES}', JSON.stringify(scrapedData.features || []))
         .replace('{SPECIFICATIONS}', JSON.stringify(scrapedData.specifications || {}))
         .replace('{ADDITIONAL_CONTENT}', JSON.stringify(scrapedData.additionalContent || []))
         .replace('{SEO_DATA}', JSON.stringify(scrapedData.seoData || {}))
         .replace('{TARGET_MARKET}', additionalContext.targetMarket || 'UK Food Manufacturers')
+        .replace('{PRODUCT_CATEGORY}', scrapedData.providedCategory || category || 'Food Ingredient')
         .replace('{USPS}', JSON.stringify(additionalContext.usps || []));
 
       // Add product context to all prompts
@@ -418,7 +160,7 @@ Business Model: B2B Supplier`;
       try {
         console.log(`Generating ${promptKey}...`);
         const response = await anthropic.messages.create({
-          model: 'claude-3-5-sonnet-20241022', // Using latest Sonnet for quality
+          model: 'claude-3-5-sonnet-20241022',
           max_tokens: 2000,
           temperature: 0.4,
           system: prompt.system,
@@ -438,16 +180,27 @@ Business Model: B2B Supplier`;
     }
 
     // Generate content in sequence with dependencies
+    // First: Product Title (needed for URL, meta description, etc.)
     content.productTitle = await generateWithPrompt('productTitle');
     await new Promise(resolve => setTimeout(resolve, 500)); // Rate limiting
 
+    // Second: Product URL (depends on title)
+    content.productUrl = await generateWithPrompt('productUrl');
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Third: Meta Description (depends on title)
     content.metaDescription = await generateWithPrompt('metaDescription');
     await new Promise(resolve => setTimeout(resolve, 500));
 
+    // Fourth: Meta Title (depends on title)
+    content.metaTitle = await generateWithPrompt('metaTitle');
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Fifth: Introduction (depends on title and meta)
     content.introduction = await generateWithPrompt('introduction');
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Generate remaining content
+    // Generate remaining content in parallel
     const parallelGenerations = await Promise.all([
       generateWithPrompt('featuresAndBenefits'),
       generateWithPrompt('technicalSpecs'),
@@ -466,69 +219,27 @@ Business Model: B2B Supplier`;
 
     // Process and format the content
 
-    // Parse features and benefits - handle multiple bullet formats
+    // Clean up product URL if needed
+    if (content.productUrl) {
+      // Ensure it starts with the correct domain
+      if (!content.productUrl.startsWith('https://www.geraldmcdonald.com')) {
+        if (content.productUrl.startsWith('/')) {
+          content.productUrl = 'https://www.geraldmcdonald.com' + content.productUrl;
+        } else if (!content.productUrl.startsWith('http')) {
+          content.productUrl = 'https://www.geraldmcdonald.com/products/' + content.productUrl;
+        }
+      }
+      // Ensure it ends with /
+      if (!content.productUrl.endsWith('/')) {
+        content.productUrl += '/';
+      }
+    }
+
+    // Parse features and benefits - ensure exactly 7 bullets
     if (content.featuresAndBenefits) {
       const rawContent = content.featuresAndBenefits;
       const lines = rawContent.split('\n');
 
-      // Try to extract bullets with various formats: •, -, *, or numbered
-      const bullets = lines
-        .map(line => line.trim())
-        .filter(line => {
-          // Match lines starting with: •, -, *, or numbered (1., 2., etc.)
-          return line.startsWith('•') ||
-                 line.startsWith('-') ||
-                 line.startsWith('*') ||
-                 /^\d+\./.test(line);
-        })
-        .map(line => {
-          // Remove the bullet/number prefix
-          if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
-            return line.substring(1).trim();
-          }
-          // Remove numbered prefix (e.g., "1. ", "2. ")
-          return line.replace(/^\d+\.\s*/, '').trim();
-        })
-        .filter(line => line.length > 0); // Remove empty lines
-
-      // If we found bullets, use them; otherwise keep raw content as single-item array
-      if (bullets.length > 0) {
-        content.featuresAndBenefits = bullets;
-      } else {
-        // Fallback: if no bullets found, keep the whole content as a descriptive block
-        // This handles cases where AI returns paragraph format
-        content.featuresAndBenefits = [rawContent.trim()];
-      }
-    }
-
-    // Parse technical specifications
-    if (content.technicalSpecs) {
-      const specsObject = {};
-      const lines = content.technicalSpecs.split('\n').filter(line => line.trim());
-
-      lines.forEach(line => {
-        if (line.includes('|')) {
-          const [key, value] = line.split('|').map(s => s.trim());
-          if (key && value && key !== 'Specification' && value !== 'Details') {
-            specsObject[key] = value;
-          }
-        }
-      });
-
-      content.technicalSpecs = Object.keys(specsObject).length > 0 ? specsObject : {
-        'Product Form': scrapedData.specifications?.['Product Form'] || 'Contact for details',
-        'Packaging': scrapedData.specifications?.['Packaging'] || '25kg standard packaging',
-        'Shelf Life': scrapedData.specifications?.['Shelf Life'] || '12 months',
-        'Storage': scrapedData.specifications?.['Storage'] || 'Cool, dry conditions'
-      };
-    }
-
-    // Parse use cases - handle multiple bullet formats
-    if (content.useCases) {
-      const rawContent = content.useCases;
-      const lines = rawContent.split('\n');
-
-      // Try to extract bullets with various formats: •, -, *, or numbered
       const bullets = lines
         .map(line => line.trim())
         .filter(line => {
@@ -546,7 +257,59 @@ Business Model: B2B Supplier`;
         .filter(line => line.length > 0);
 
       if (bullets.length > 0) {
-        content.useCases = bullets;
+        // Take exactly 7 bullets as per specification
+        content.featuresAndBenefits = bullets.slice(0, 7);
+      } else {
+        content.featuresAndBenefits = [rawContent.trim()];
+      }
+    }
+
+    // Parse technical specifications
+    if (content.technicalSpecs) {
+      const specsObject = {};
+      const lines = content.technicalSpecs.split('\n').filter(line => line.trim());
+
+      lines.forEach(line => {
+        if (line.includes('|')) {
+          const parts = line.split('|').map(s => s.trim());
+          if (parts.length >= 2) {
+            const key = parts[0];
+            const value = parts[1];
+            // Skip header rows
+            if (key && value && key !== 'Property' && key !== 'Field' && value !== 'Value' && value !== 'Description') {
+              specsObject[key] = value;
+            }
+          }
+        }
+      });
+
+      content.technicalSpecs = Object.keys(specsObject).length > 0 ? specsObject : null;
+    }
+
+    // Parse use cases - ensure exactly 8 bullets
+    if (content.useCases) {
+      const rawContent = content.useCases;
+      const lines = rawContent.split('\n');
+
+      const bullets = lines
+        .map(line => line.trim())
+        .filter(line => {
+          return line.startsWith('•') ||
+                 line.startsWith('-') ||
+                 line.startsWith('*') ||
+                 /^\d+\./.test(line);
+        })
+        .map(line => {
+          if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+            return line.substring(1).trim();
+          }
+          return line.replace(/^\d+\.\s*/, '').trim();
+        })
+        .filter(line => line.length > 0);
+
+      if (bullets.length > 0) {
+        // Take exactly 8 use cases as per specification
+        content.useCases = bullets.slice(0, 8);
       } else {
         content.useCases = [rawContent.trim()];
       }
@@ -566,16 +329,16 @@ Business Model: B2B Supplier`;
 
         keywordSections.forEach(section => {
           const lines = section.split('\n').filter(line => line.includes('|'));
-          if (section.includes('PRIMARY')) {
-            parsedKeywords.primaryKeywords = lines.map(line => line.split('|')[0].trim());
-          } else if (section.includes('COMMERCIAL')) {
-            parsedKeywords.commercialIntent = lines.map(line => line.split('|')[0].trim());
-          } else if (section.includes('LONG-TAIL')) {
-            parsedKeywords.longTail = lines.map(line => line.split('|')[0].trim());
-          } else if (section.includes('SEMANTIC')) {
-            parsedKeywords.semantic = lines.map(line => line.split('|')[0].trim());
-          } else if (section.includes('INDUSTRY')) {
-            parsedKeywords.industrySpecific = lines.map(line => line.split('|')[0].trim());
+          if (section.toUpperCase().includes('PRIMARY')) {
+            parsedKeywords.primaryKeywords = lines.map(line => line.split('|')[0].trim()).filter(k => k);
+          } else if (section.toUpperCase().includes('COMMERCIAL')) {
+            parsedKeywords.commercialIntent = lines.map(line => line.split('|')[0].trim()).filter(k => k);
+          } else if (section.toUpperCase().includes('LONG-TAIL') || section.toUpperCase().includes('LONG TAIL')) {
+            parsedKeywords.longTail = lines.map(line => line.split('|')[0].trim()).filter(k => k);
+          } else if (section.toUpperCase().includes('SEMANTIC') || section.toUpperCase().includes('LSI')) {
+            parsedKeywords.semantic = lines.map(line => line.split('|')[0].trim()).filter(k => k);
+          } else if (section.toUpperCase().includes('INDUSTRY')) {
+            parsedKeywords.industrySpecific = lines.map(line => line.split('|')[0].trim()).filter(k => k);
           }
         });
 
@@ -585,21 +348,27 @@ Business Model: B2B Supplier`;
       }
     }
 
-    // Parse FAQs
+    // Parse FAQs - ensure exactly 7 Q&A pairs
     if (content.faqs) {
-      const faqPairs = content.faqs.split('\n\n').filter(pair => pair.includes('Q:') && pair.includes('A:'));
-      content.faqs = faqPairs.map(pair => {
+      const faqPairs = content.faqs.split(/\n\n+/).filter(pair =>
+        pair.includes('Q:') && pair.includes('A:')
+      );
+      const parsedFaqs = faqPairs.map(pair => {
         const lines = pair.split('\n');
-        const question = lines.find(line => line.startsWith('Q:'))?.substring(2).trim();
-        const answer = lines.find(line => line.startsWith('A:'))?.substring(2).trim();
+        const questionLine = lines.find(line => line.trim().startsWith('Q:'));
+        const answerLine = lines.find(line => line.trim().startsWith('A:'));
+
+        const question = questionLine?.replace(/^Q:\s*/i, '').trim();
+        const answer = answerLine?.replace(/^A:\s*/i, '').trim();
+
         return { question, answer };
       }).filter(faq => faq.question && faq.answer);
+
+      // Take exactly 7 FAQs as per specification
+      content.faqs = parsedFaqs.slice(0, 7);
     }
 
-    // Generate structured data
-    const companyName = scrapedData.businessInfo?.companyName || "Gerald McDonald Ltd";
-    const foundingDate = scrapedData.businessInfo?.founded || "1952";
-
+    // Generate structured data with the new format
     content.structuredData = {
       "@context": "https://schema.org",
       "@graph": [
@@ -607,24 +376,24 @@ Business Model: B2B Supplier`;
           "@type": "Product",
           "name": content.productTitle || scrapedData.title,
           "description": content.metaDescription || scrapedData.description,
-          "image": scrapedData.images?.map(img => typeof img === 'string' ? img : img.url) || [],
+          "image": [],
           "brand": {
             "@type": "Brand",
-            "name": companyName
+            "name": "Gerald McDonald Ltd"
           },
           "manufacturer": {
             "@type": "Organization",
-            "name": companyName,
-            "foundingDate": foundingDate
+            "name": "Gerald McDonald Ltd",
+            "foundingDate": "1952"
           },
           "offers": {
             "@type": "Offer",
-            "price": scrapedData.price || "Contact for pricing",
-            "priceCurrency": scrapedData.currency || "GBP",
+            "price": "Contact for pricing",
+            "priceCurrency": "GBP",
             "availability": "https://schema.org/InStock",
             "seller": {
               "@type": "Organization",
-              "name": companyName
+              "name": "Gerald McDonald Ltd"
             }
           }
         }
@@ -633,6 +402,129 @@ Business Model: B2B Supplier`;
 
     // Add business research summary to response
     content.businessResearch = businessResearch;
+
+    // Apply fallbacks for any missing content
+
+    // Fallback for product title
+    content.productTitle = content.productTitle || `${scrapedData.title || 'Premium Food Ingredient'} | Food-Grade Quality | BRC Certified`;
+
+    // Fallback for product URL
+    if (!content.productUrl) {
+      const slug = (scrapedData.title || 'product')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+      content.productUrl = `https://www.geraldmcdonald.com/products/${slug}/`;
+    }
+
+    // Fallback for meta description
+    content.metaDescription = content.metaDescription ||
+      `Source premium ${scrapedData.title || 'food ingredients'} from Gerald McDonald, the UK's trusted BRC-certified supplier. Quality assured for food manufacturing. Request specs today.`;
+
+    // Fallback for meta title
+    content.metaTitle = content.metaTitle ||
+      `${(scrapedData.title || 'Premium Food Ingredient').substring(0, 35)} | Gerald McDonald Ltd`;
+
+    // Fallback for introduction
+    content.introduction = content.introduction ||
+      `${scrapedData.title || 'This premium food ingredient'} is a versatile ingredient essential for manufacturers producing high-quality food products. As the UK's leading BRC-certified supplier since 1952, Gerald McDonald provides this product with consistent quality, perfect for industrial food production. Our carefully sourced and processed ingredients maintain their quality profile while meeting strict food safety standards, making them ideal for a wide range of food manufacturing applications.`;
+
+    // Fallback for features and benefits (exactly 7)
+    if (!content.featuresAndBenefits || !Array.isArray(content.featuresAndBenefits) || content.featuresAndBenefits.length < 7) {
+      content.featuresAndBenefits = [
+        'Custom blending capabilities with no minimum order quantities enable precise recipe development while reducing inventory costs and waste.',
+        'BRC-certified facility with automated CIP/SIP systems ensures consistent product quality and compliance with international food safety standards.',
+        'Strategic UK port location and flexible delivery schedules guarantee reliable supply chain management and faster time-to-market.',
+        'In-house R&D support and trial blending services accelerate product development cycles while minimizing formulation risks.',
+        'Multiple certifications (Kosher, Halal, Organic) open access to specialty markets and enhance product marketability.',
+        'Computer-controlled blending facility (1,000L to 26,000L capacity) delivers precise consistency across both small and large production runs.',
+        'Century of sourcing expertise ensures premium ingredient quality and stable supply through established global networks.'
+      ];
+    }
+
+    // Fallback for technical specs
+    if (!content.technicalSpecs || typeof content.technicalSpecs !== 'object' || Object.keys(content.technicalSpecs).length < 5) {
+      content.technicalSpecs = {
+        'Product Name': content.productTitle?.split('|')[0]?.trim() || scrapedData.title || 'Food Ingredient',
+        'Product Type': 'Food Ingredient',
+        'Appearance': 'As per specification',
+        'Colour': 'Characteristic',
+        'Packaging': 'Aseptic bags in drums or IBC containers',
+        'Storage Conditions': 'Store in cool, dry conditions below 25°C',
+        'Shelf Life': '12-24 months when unopened and properly stored',
+        'Allergens': 'None (produced in facility handling various allergens)',
+        'GMO Status': 'Non-GMO',
+        'Country of Origin': 'Various approved sources',
+        'Certifications': 'BRC AA Grade, FSSC 22000, HACCP, ISO 22000',
+        'Microbiological Standard': 'Total Plate Count <1000 cfu/g',
+        'Suitable For': 'Vegetarian, Vegan, Kosher, Halal (on request)'
+      };
+    }
+
+    // Fallback for use cases (exactly 8)
+    if (!content.useCases || !Array.isArray(content.useCases) || content.useCases.length < 8) {
+      content.useCases = [
+        'Perfect for premium British craft beverage makers seeking consistent base ingredients - provides reliable quality and authentic flavour profiles while maintaining year-round production standards.',
+        'Ideal for high-end baby food manufacturers requiring clean-label ingredients - offers natural characteristics and smooth texture without added preservatives.',
+        'Premium yogurt producers can incorporate at optimal concentrations into their products, achieving authentic taste and texture while maintaining clean label requirements for UK retail chains.',
+        'Artisanal ice cream producers can incorporate the ingredient to create distinctive flavour profiles while maintaining clean label requirements for natural ingredients.',
+        'Bakery manufacturers benefit from consistent quality for pastries and baked goods, ensuring uniform product quality across large-scale production runs.',
+        'Confectionery producers can utilise the ingredient in gummies and sweets, achieving desired flavour profiles while meeting UK food safety standards.',
+        'Ready meal manufacturers appreciate the convenience and consistency for sauce bases and flavour enhancement in premium prepared food ranges.',
+        'Health and wellness brands can incorporate into protein shakes and functional beverages, adding natural appeal to sports nutrition products.'
+      ];
+    }
+
+    // Fallback for FAQs (exactly 7)
+    if (!content.faqs || !Array.isArray(content.faqs) || content.faqs.length < 7) {
+      const productName = content.productTitle?.split('|')[0]?.trim() || 'this ingredient';
+      content.faqs = [
+        {
+          question: `What certifications does Gerald McDonald's ${productName} meet for food manufacturing?`,
+          answer: `Gerald McDonald's products meet BRC AA Grade certification standards and are available with Kosher, Halal, and Organic certifications upon request. All products comply with UK and EU food safety regulations and are manufactured in our BRC-certified Basildon facility.`
+        },
+        {
+          question: 'How does Gerald McDonald ensure consistent quality across batches?',
+          answer: 'Gerald McDonald maintains rigorous quality control through our BRC AA Grade certified facility in Basildon. We use computer-controlled blending systems, in-house laboratory testing, and comprehensive traceability from source to delivery, ensuring batch-to-batch consistency.'
+        },
+        {
+          question: 'What is the minimum order quantity for custom ingredient blends?',
+          answer: 'Gerald McDonald offers flexible ordering with no minimum quantity requirements for custom blends. Our facility can accommodate blending volumes from 1,000L to 26,000L, making us suitable for both small-batch specialty orders and large-scale production runs.'
+        },
+        {
+          question: 'What is the typical lead time for custom blend development?',
+          answer: 'Standard custom blend development typically takes 2-4 weeks from initial consultation to delivery. Our R&D team works closely with you throughout the process. Rush orders can be accommodated subject to capacity and ingredient availability.'
+        },
+        {
+          question: 'Are samples available for product development and testing?',
+          answer: 'Yes, Gerald McDonald provides samples for qualified food manufacturers. Contact our technical team to discuss your requirements and arrange sample delivery. Samples are typically dispatched within 48 hours of approval.'
+        },
+        {
+          question: 'What are the storage requirements after delivery?',
+          answer: 'Storage requirements vary by product type but generally require cool, dry conditions below 25°C away from direct sunlight. Specific storage instructions are provided with each delivery. Opened containers should be resealed and used within the recommended timeframe.'
+        },
+        {
+          question: 'What technical support does Gerald McDonald provide for formulation?',
+          answer: 'Gerald McDonald offers comprehensive technical support including formulation guidance, application testing, and ongoing consultation. Our experienced food technologists can advise on usage rates, compatibility, and optimisation for your specific applications. Contact us at +44 (0)1268 244900.'
+        }
+      ];
+    }
+
+    // Fallback for SEO keywords
+    if (!content.seoKeywords || typeof content.seoKeywords !== 'object') {
+      const baseProduct = scrapedData.title?.toLowerCase() || 'food ingredient';
+      content.seoKeywords = {
+        primaryKeywords: [baseProduct, `${baseProduct} supplier`, 'food ingredient UK'],
+        commercialIntent: [`buy ${baseProduct}`, `${baseProduct} wholesale`, `bulk ${baseProduct} supplier`],
+        longTail: [`${baseProduct} for food manufacturing`, `BRC certified ${baseProduct}`, `UK ${baseProduct} supplier`],
+        semantic: ['food grade ingredient', 'industrial food supply', 'food manufacturing ingredient'],
+        industrySpecific: ['BRC certified supplier', 'FSSC 22000', 'food ingredient manufacturer UK']
+      };
+    }
+
+    // Fallback for call to action
+    content.callToActions = content.callToActions ||
+      `Request Your Sample & Technical Support Today | Backed by 70+ years of ingredient expertise, our technical team is ready to support your next product innovation. Contact our specialists at +44 (0)1268 244900 or email ingredients@geraldmcdonald.com for immediate sampling and specification assistance.`;
 
     console.log('Content generation completed successfully');
     return res.status(200).json(content);
